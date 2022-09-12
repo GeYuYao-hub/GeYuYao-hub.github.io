@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="小丑鱼Nemo">
+
+
+
+    <meta name="description" content="广告位招租">
+
+
+
+<title>Unix源码剖析：进程 | 小丑鱼Nemo的小窝</title>
+
+
+
+    <link rel="icon" href="../../../../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../../../../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../../../../js/script.js"></script>
+    
+    <script src="../../../../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">欢迎来到小丑鱼Nemo的小窝</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../../../../archives">Posts</a>
+                
+                    <a class="menu-item" href="../../../../category">Categories</a>
+                
+                    <a class="menu-item" href="../../../../tag">Tags</a>
+                
+                    <a class="menu-item" href="../../../../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">欢迎来到小丑鱼Nemo的小窝</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../../../../archives">Posts</a>
+                
+                    <a class="menu-item" href="../../../../category">Categories</a>
+                
+                    <a class="menu-item" href="../../../../tag">Tags</a>
+                
+                    <a class="menu-item" href="../../../../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Unix源码剖析：进程</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">小丑鱼Nemo</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">九月 7, 2022&nbsp;&nbsp;23:13:03</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../../../../categories/Unix%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/">Unix源码剖析</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="零-英文简写解释："><a href="#零-英文简写解释：" class="headerlink" title="零.英文简写解释："></a>零.英文简写解释：</h1><ul>
+<li><p>PSW:表示处理器的状态</p>
+</li>
+<li><p>TSS:分时系统</p>
+</li>
+<li><p>MMU:内存管理单元</p>
+</li>
+<li><p>PPDA(Per Process Data Area):未找到准确的中文翻译,包含user结构体和内核栈区域</p>
+</li>
+<li><p>APR:页寄存器</p>
+</li>
+</ul>
+<hr>
+<h1 id="一-概要"><a href="#一-概要" class="headerlink" title="一.概要"></a>一.概要</h1><h3 id="1-进程的概念"><a href="#1-进程的概念" class="headerlink" title="1.进程的概念"></a>1.进程的概念</h3><ul>
+<li>一个进程对应一个执行中的程序。一个程序可以开启多个进程。程序是静态的，进程是动态的。进程是程序的实例。</li>
+<li>进程拥有独立的虚拟地址空间。</li>
+<li>由于程序的指令在执行时不会发生变化，因此从节约内存使用量的角度出发，有时也会将同一块内存分配给多个进程的虚拟地址空间<br><a id="1"></a></li>
+</ul>
+<h3 id="2-进程的并行执行"><a href="#2-进程的并行执行" class="headerlink" title="2.进程的并行执行"></a>2.进程的并行执行</h3><p>采用分时系统。<strong>可执行的进程只有一个</strong>。</p>
+<blockquote>
+<p>注:是并行不是并发，并行指宏观上在一个时间段内同时进行，但是微观来讲每一个时刻只有一个进程在占用执行。</p>
+</blockquote>
+<h3 id="3-进程的执行状态"><a href="#3-进程的执行状态" class="headerlink" title="3.进程的执行状态"></a>3.进程的执行状态</h3><ul>
+<li>可执行的只有一个或零个。</li>
+<li>待机的有多个或零个。（就绪状态）</li>
+<li>休眠的有多个或零个。（等待资源）</li>
+</ul>
+<blockquote>
+<p>资源就绪后，会优先执行休眠状态的进程。</p>
+</blockquote>
+<h3 id="4-用户模式和内核模式"><a href="#4-用户模式和内核模式" class="headerlink" title="4.用户模式和内核模式"></a>4.用户模式和内核模式</h3><p>分为两种模式：用户模式和内核模式。<br>为了安全，用户不能直接访问或修改内核的内存区域，也无法直接实现内存的功能。<br>而是要通过系统调用的方式来实现内核功能。</p>
+<h3 id="5-交换处理"><a href="#5-交换处理" class="headerlink" title="5.交换处理"></a>5.交换处理</h3><blockquote>
+<p>“随着进程数量的增多会导致内存容量不足。内核定期将处于休眠状态、重要度较低的进程（所需的数据）会从内存转移到交换空间（swap out，换出），或者将交换空间中已处于可执行状态的进程重新恢复到内存（swap in，换入）。这个处理被称为交换处理，由系统启动时生成的进程执行。”</p>
+</blockquote>
+<p>并不理解</p>
+<p><a id="2"></a></p>
+<hr>
+<h1 id="二-proc-结构体和-user-结构体"><a href="#二-proc-结构体和-user-结构体" class="headerlink" title="二.proc 结构体和 user 结构体"></a>二.proc 结构体和 user 结构体</h1><h3 id="1-proc"><a href="#1-proc" class="headerlink" title="1.proc"></a>1.proc</h3><p>一个proc结构体对应一个进程，系统中含有一个proc结构体数组记录着所有的进程。proc结构体数组在内存中是常驻的，也就是说绝对地址的固定的。<br>系统每开启一个新的进程需要遍历所有进程的状态，由于绝对地址是固定的所以这个过程会很快。</p>
+<h3 id="2-user"><a href="#2-user" class="headerlink" title="2.user"></a>2.user</h3><p>user结构体用来管理进程打开的文件或目录等信息。可以理解为负责每个进程的文件管理。</p>
+<hr>
+<h1 id="三-为进程分配内存"><a href="#三-为进程分配内存" class="headerlink" title="三.为进程分配内存"></a>三.为进程分配内存</h1><h3 id="1-代码段"><a href="#1-代码段" class="headerlink" title="1.代码段"></a>1.代码段</h3><p>只读的。同一个程序的多个进程共用一个代码段。长度由user.u_tsize来记录。</p>
+<h3 id="2-数据段"><a href="#2-数据段" class="headerlink" title="2.数据段"></a>2.数据段</h3><p>数据段是不会被多个进程共享的（否则就会造成计算错误）。<br>数据段的物理地址和长度分别由proc.p_addr和proc.p_size表示。</p>
+<center>
+    <img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/09/07/Unix%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%EF%BC%9A%E8%BF%9B%E7%A8%8B/data_duan.png">
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 1px;">数据段示意图</div>
+</center>
+由三部分构成
+
+<p>①PPDA： 包含user结构体和内核栈区域。</p>
+<p>② 数据区域：如果需要扩展需要系统调用。</p>
+<p>③ 栈区域</p>
+<h3 id="3-虚拟地址空间"><a href="#3-虚拟地址空间" class="headerlink" title="3.虚拟地址空间"></a>3.虚拟地址空间</h3><p>8KB为边界对齐。每个进程独立虚拟地址空间，但是<strong>进程间共享代码段时不受此限制</strong>。</p>
+<p>优点：</p>
+<ul>
+<li>编程更加简单只需要考虑相对地址</li>
+<li>将各个进程的内存分离开来，防止相互影响。同时还能阻止用户修改无权限内存或系统内存。</li>
+<li>数据连续性</li>
+</ul>
+<h3 id="4-变换地址"><a href="#4-变换地址" class="headerlink" title="4.变换地址"></a>4.变换地址</h3><center>
+    <img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/09/07/Unix%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%EF%BC%9A%E8%BF%9B%E7%A8%8B/chang_data.png">
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 1px;">变换地址</div>
+</center>
+
+<ul>
+<li>MMU通过APR（Active Page Register）寄存器将虚拟地址变换为物理地址。</li>
+<li>1个APR由1个PAR（Page Address Register）寄存器和1个PDR（Page Description Register）寄存器构成。<ul>
+<li>PDR记录基地址</li>
+<li>PAR记录页的块数及其他信息。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>用户进程用APR的值保存在user结构体中，当该进程成为执行进程时，会将保存在user结构体中的值设置到用户进程用APR中。</p>
+</blockquote>
+<p><strong>APR共有8组，编号为0到7 。1组APR对应1页。PAR用来保存与各页物理地址的基地址有关的信息。而PDR记录这个页的信息。</strong>	</p>
+<center>
+    <img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/09/07/Unix%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%EF%BC%9A%E8%BF%9B%E7%A8%8B/addcal.jpg">
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 1px;">物理地址的计算</div>
+</center>
+
+<p><strong>重要补充:</strong><br>内核可以通过全局变量$u(0140000)$来访问到正在执行的进程的user结构体，因为在内核模式下编号为6的PAR记录的是正在执行进程的数据段的物理地址。而数据段的物理地址正是user结构体的起始地址。</p>
+<blockquote>
+<p>地址$0140000$的高位3比特为6，这意味着内核模式使用的编号为6的APR将被选择。由于低位的比特全部为0，因此u指向内核空间第6页的起始位置。</p>
+</blockquote>
+<center>
+    <img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/09/07/Unix%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%EF%BC%9A%E8%BF%9B%E7%A8%8B/u.png">
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 1px;">通过变量 u 访问user 结构体</div>
+</center>
+
+<hr>
+<h1 id="四-疑问"><a href="#四-疑问" class="headerlink" title="四.疑问"></a>四.疑问</h1><ol>
+<li>有时同一块内存分配给多个进程的虚拟地址空间<br>这里指的是数据段还是代码段？如果是代码段那么为什么要用有时？如果是数据段是否会造成系统运行错误？</li>
+<li>什么是交换空间<br>如题</li>
+</ol>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>小丑鱼Nemo</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://geyuyao-hub.github.io/2022/09/07/Unix%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%EF%BC%9A%E8%BF%9B%E7%A8%8B/">https://geyuyao-hub.github.io/2022/09/07/Unix%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%EF%BC%9A%E8%BF%9B%E7%A8%8B/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../../../../tags/Unix%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/"># Unix源码剖析</a>
+                    
+                        <a href="../../../../tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"># 操作系统</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../../11/Unix%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%EF%BC%9A%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86-1/">Unix源码剖析：进程管理[1]</a>
+            
+            
+            <a class="next" rel="next" href="../../03/My%20first%20article/">My first article</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 小丑鱼Nemo | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":300,"height":600},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>

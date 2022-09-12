@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="小丑鱼Nemo">
+
+
+
+    <meta name="description" content="广告位招租">
+
+
+
+<title>Unix源码剖析：进程管理[1] | 小丑鱼Nemo的小窝</title>
+
+
+
+    <link rel="icon" href="../../../../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../../../../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../../../../js/script.js"></script>
+    
+    <script src="../../../../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">欢迎来到小丑鱼Nemo的小窝</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../../../../archives">Posts</a>
+                
+                    <a class="menu-item" href="../../../../category">Categories</a>
+                
+                    <a class="menu-item" href="../../../../tag">Tags</a>
+                
+                    <a class="menu-item" href="../../../../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">欢迎来到小丑鱼Nemo的小窝</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../../../../archives">Posts</a>
+                
+                    <a class="menu-item" href="../../../../category">Categories</a>
+                
+                    <a class="menu-item" href="../../../../tag">Tags</a>
+                
+                    <a class="menu-item" href="../../../../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Unix源码剖析：进程管理[1]</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">小丑鱼Nemo</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">九月 11, 2022&nbsp;&nbsp;22:02:04</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../../../../categories/Unix%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/">Unix源码剖析</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="零-进程的生命周期"><a href="#零-进程的生命周期" class="headerlink" title="零.进程的生命周期"></a>零.进程的生命周期</h1><center>
+    <img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/09/11/Unix%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%EF%BC%9A%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86-1/1.png">
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 1px;">进程的生命周期示意图</div>
+</center>
+
+<ul>
+<li>某个进程通过系统调用fork，创建一个用于执行程序的进程。生成此进程的进程称为父进程，被生成的进程称为子进程。子进程通过复制父进程的数据得以创建。 </li>
+<li>父进程执行系统调用wait，进入等待状态直到子进程处理结束。</li>
+<li>当控制权转移到子进程后，子进程通过系统调用exec将程序读取到内存并开始执行。</li>
+<li>当程序执行完毕后，子进程通过系统调用exit结束自身的运行并进入僵尸态，控制权交回父进程。</li>
+<li>父进程得到子进程的执行结果后清理子进程。</li>
+</ul>
+<h1 id="一-创建进程"><a href="#一-创建进程" class="headerlink" title="一.创建进程"></a>一.创建进程</h1><h3 id="1-进程的复制"><a href="#1-进程的复制" class="headerlink" title="1.进程的复制"></a>1.进程的复制</h3><p>  通过将父进程的数据复制到子进程，以此创建新的进程。由于可以将此过程看做对进程的分支处理，因此创建进程的系统调用被命名为fork。</p>
+<ul>
+<li>复制proc[]数组元素<ul>
+<li>子进程的proc.p_ppid指向父进程的proc.p_pid。</li>
+</ul>
+</li>
+<li>复制数据段</li>
+<li>复制对象包括PPDA。子进程继承了已打开的文件和当前目录等数据。</li>
+<li>子进程的user.p_procp指向proc[]中代表子进程的元素。</li>
+<li>代码段不是复制对象。子进程与父进程共享text[]中的相同元素。text[]用来管理代码段。</li>
+</ul>
+<h3 id="2-父进程与子进程"><a href="#2-父进程与子进程" class="headerlink" title="2.父进程与子进程"></a>2.父进程与子进程</h3><p>  一个父进程下可能有多个子进程，这些子进程的p_ppid设置为父进程的id。而父进程想找到自己的子进程需要遍历proc数组。</p>
+<h3 id="3-系统调用fork"><a href="#3-系统调用fork" class="headerlink" title="3.系统调用fork"></a>3.系统调用fork</h3><p>  用C语言编写的用户程序在执行fork()时会首先调用C语言的库函数fork()，在此库函数中再通过执行sys fork来访问系统调用fork。</p>
+<p><code>usr\source\s4\fork.s</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">/ C library -- fork</span><br><span class="line"></span><br><span class="line">/ pid = fork();</span><br><span class="line">/</span><br><span class="line">/ pid == 0 in child process; pid == -1 means error return</span><br><span class="line">/ in child, parents id is in par_uid if needed</span><br><span class="line"></span><br><span class="line">.globl	_fork, cerror, _par_uid</span><br><span class="line"></span><br><span class="line">_fork:</span><br><span class="line">	mov	r5,-(sp)</span><br><span class="line">	mov	sp,r5</span><br><span class="line">	/* usr\sys\ken\sys1.c\fork() */</span><br><span class="line">	sys	fork</span><br><span class="line">		/* 无条件跳转，直接跳转到1 */</span><br><span class="line">		br 1f</span><br><span class="line">	/* 检查进&amp;借位标志（PSW[0]）是否为0，是的话跳转26，不是的话跳转cerror*/</span><br><span class="line">	bec	2f</span><br><span class="line">	jmp	cerror</span><br><span class="line">1:</span><br><span class="line">	/* 将proc.p_pid复制到_par_uid中 */</span><br><span class="line">	/* r0中保存父进程id这个操作在39行fork函数中“u.u_ar0[R0] = p1-&gt;p_pid;”进行的 */</span><br><span class="line">	mov	r0,_par_uid</span><br><span class="line">	/* r0清零 */</span><br><span class="line">	clr	r0</span><br><span class="line">2:</span><br><span class="line">	mov	(sp)+,r5 </span><br><span class="line">	/* 返回调用C语言库函数fork()的位置 */</span><br><span class="line">	rts	pc</span><br><span class="line">.bss</span><br><span class="line">_par_uid: .=.+2</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>第十四行,调用内核fork()函数。此时，程序跳转到<code>usr\sys\ken\sys1.c\fork()</code>处。</p>
+<p><code>usr\sys\ken\sys1.c</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">fork()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">register</span> <span class="class"><span class="keyword">struct</span> <span class="title">proc</span> *<span class="title">p1</span>, *<span class="title">p2</span>;</span></span><br><span class="line">    <span class="comment">// p1指向父进程的proc结构体</span></span><br><span class="line">	p1 = u.u_procp;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    * 利用p2遍历proc[]，找到一个没有用过的proc结构体</span></span><br><span class="line"><span class="comment">    * 找到：跳转入found，开启新结构体</span></span><br><span class="line"><span class="comment">    * 没找到：没有可用的proc元素，跳转如out</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">	<span class="keyword">for</span>(p2 = &amp;proc[<span class="number">0</span>]; p2 &lt; &amp;proc[NPROC]; p2++)</span><br><span class="line">		<span class="keyword">if</span>(p2-&gt;p_stat == <span class="literal">NULL</span>)</span><br><span class="line">			<span class="comment">// find an not using proc</span></span><br><span class="line">			<span class="keyword">goto</span> found;</span><br><span class="line">	u.u_error = EAGAIN;</span><br><span class="line">	<span class="keyword">goto</span> out;</span><br><span class="line"></span><br><span class="line">found:</span><br><span class="line">    <span class="comment">// 如果正常运行的话newproc()返回0,故不会进入条件语句中。</span></span><br><span class="line">	<span class="keyword">if</span>(newproc()) &#123;</span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		* 将用户进程的r0设定为父进程的proc.p_pid</span></span><br><span class="line"><span class="comment">		* 以此作为系统调用fork对子进程的返回值。</span></span><br><span class="line"><span class="comment">		*/</span></span><br><span class="line">		u.u_ar0[R0] = p1-&gt;p_pid;</span><br><span class="line">		u.u_cstime[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">		u.u_cstime[<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">		u.u_stime = <span class="number">0</span>;</span><br><span class="line">		u.u_cutime[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">		u.u_cutime[<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">		u.u_utime = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/* </span></span><br><span class="line"><span class="comment">	* 将父进程的R0设置为子进程的id</span></span><br><span class="line"><span class="comment">	* R0 = 0</span></span><br><span class="line"><span class="comment">	* u_ar0 : address of users saved R0</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">	u.u_ar0[R0] = p2-&gt;p_pid;</span><br><span class="line"></span><br><span class="line">out:</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* </span></span><br><span class="line"><span class="comment">	* 没有空余的proc结构体了，没法执行子进程</span></span><br><span class="line"><span class="comment">	* 程序计数器指向下一条程序</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">	u.u_ar0[R7] =+ <span class="number">2</span>;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    * 此时下一行程序将执行fork.s中的&quot;bec 2f&quot;</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>  在fork.s文件中，在调用sys fork之后，程序进入到<code>usr\sys\ken\sys1.c</code>文件中的fork函数中。</p>
+<h4 id="父进程"><a href="#父进程" class="headerlink" title="父进程"></a>父进程</h4><p>  如果newproc()返回0则执行第39行，将父进程的r0设为子进程的proc.p_pid，以此作为系统调用fork对父进程的返回值。接着执行第47行，将程序计数器指向下一条程序也就是fork.s中的18行。在第十八行若出现错误则置1，则跳转到cerror。若没出现错误则置0，跳转到第26行，通过rts指令返回调用C语言库函数fork()的位置。<mark>返回值为保存在r0中的子进程的ID。</mark></p>
+<h4 id="子进程"><a href="#子进程" class="headerlink" title="子进程"></a>子进程</h4><p>  如果newproc() 返回1则执行第25行，将用户进程的r0设定为父进程的proc.p_pid，以此作为系统调用fork对子进程的返回值。在处理结束前，进程的执行时间被清 0。此时fork()函数执行结束，返回到fork.s文件中，此时执行到第16行(这是因为在fork()中并没有执行<code>usr\sys\ken\sys1.c</code>中的47行<code>u.u_ar0[R7] =+ 2</code>)，此时执行<code>br 1f</code>，这是一条无条件跳转指令，跳转到第20行，在第23行中将父进程的id复制到_par_uid中(这个操作在<code>usr\sys\ken\sys1.c</code>中的39行fork函数中<code>u.u_ar0[R0] = p1-&gt;p_pid;</code>进行的)。25行将r0清零。<mark>第29行的rts指令用来返回调用C语言库函数fork()的位置，返回值为保存在r0中的0。</mark></p>
+<p><code>usr\sys\ken\slp.c</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Create a new process-- the internal version of</span></span><br><span class="line"><span class="comment"> * sys fork.</span></span><br><span class="line"><span class="comment"> * It returns 1 in the new process.</span></span><br><span class="line"><span class="comment"> * How this happens is rather hard to understand.</span></span><br><span class="line"><span class="comment"> * The essential fact is that the new process is created</span></span><br><span class="line"><span class="comment"> * in such a way that appears to have started executing</span></span><br><span class="line"><span class="comment"> * in the same call to newproc as the parent;</span></span><br><span class="line"><span class="comment"> * but in fact the code that runs is that of swtch.</span></span><br><span class="line"><span class="comment"> * The subtle implication of the returned value of swtch</span></span><br><span class="line"><span class="comment"> * (see above) is that this is the value that newproc&#x27;s</span></span><br><span class="line"><span class="comment"> * caller in the new process sees.</span></span><br><span class="line"><span class="comment"> * 创建一个新的进程，如果是一个新进程则返回1</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">newproc()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> a1, a2;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">proc</span> *<span class="title">p</span>, *<span class="title">up</span>;</span></span><br><span class="line">	<span class="keyword">register</span> <span class="class"><span class="keyword">struct</span> <span class="title">proc</span> *<span class="title">rpp</span>;</span></span><br><span class="line">	<span class="keyword">register</span> *rip, n;</span><br><span class="line"></span><br><span class="line">	p = <span class="literal">NULL</span>;</span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	 * First, just locate a slot for a process</span></span><br><span class="line"><span class="comment">	 * and copy the useful info from this process into it.</span></span><br><span class="line"><span class="comment">	 * The panic &quot;cannot happen&quot; because fork has already</span></span><br><span class="line"><span class="comment">	 * checked for the existence of a slot.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">retry:</span><br><span class="line">	<span class="comment">// 新建进程id</span></span><br><span class="line">	mpid++;</span><br><span class="line">	<span class="keyword">if</span>(mpid &lt; <span class="number">0</span>) &#123;</span><br><span class="line">		mpid = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">goto</span> retry;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 遍历proc结构体数组,查看是否有可用的结构体。</span></span><br><span class="line">	<span class="comment">// 若有,则用p记录首个可用的结构体元素地址。</span></span><br><span class="line">	<span class="comment">// 若没有,则执行panic(&quot;no procs&quot;)</span></span><br><span class="line">	<span class="keyword">for</span>(rpp = &amp;proc[<span class="number">0</span>]; rpp &lt; &amp;proc[NPROC]; rpp++) &#123;</span><br><span class="line">		<span class="keyword">if</span>(rpp-&gt;p_stat == <span class="literal">NULL</span> &amp;&amp; p==<span class="literal">NULL</span>)</span><br><span class="line">			p = rpp;</span><br><span class="line">        <span class="comment">// 若发现proc[]中存在与为子进程生成的id重合的id，则重新执行retry</span></span><br><span class="line">		<span class="keyword">if</span> (rpp-&gt;p_pid==mpid)</span><br><span class="line">			<span class="keyword">goto</span> retry;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// 使rpp指向空余的proc结构体，若没有找到则执行panic(&quot;no procs&quot;)</span></span><br><span class="line">	<span class="keyword">if</span> ((rpp = p)==<span class="literal">NULL</span>)</span><br><span class="line">		panic(<span class="string">&quot;no procs&quot;</span>);</span><br><span class="line">	<span class="comment">// 此时已经找到了空余的proc结构体</span></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	 * make proc entry for new proc</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="comment">// 　开始对子进程进行初始设定。从u.u_procp取得proc[]中代表执行进程（父进程）的元素</span></span><br><span class="line">	rip = u.u_procp;</span><br><span class="line">	up = rip;</span><br><span class="line">    <span class="comment">// 此处对rpp进行下述设定</span></span><br><span class="line">    <span class="comment">// 可执行状态（将proc.p_stat设定为SRUN</span></span><br><span class="line">	rpp-&gt;p_stat = SRUN;</span><br><span class="line">    <span class="comment">// 位于内存中（设置SLOAD标志位）</span></span><br><span class="line">	rpp-&gt;p_flag = SLOAD; </span><br><span class="line">	rpp-&gt;p_uid = rip-&gt;p_uid;</span><br><span class="line">	rpp-&gt;p_ttyp = rip-&gt;p_ttyp;</span><br><span class="line">	rpp-&gt;p_nice = rip-&gt;p_nice;</span><br><span class="line">	rpp-&gt;p_textp = rip-&gt;p_textp;</span><br><span class="line">    <span class="comment">//  将子进程的proc结构体中存储id的成员p_pid设置为子进程的id</span></span><br><span class="line">	rpp-&gt;p_pid = mpid;</span><br><span class="line">	rpp-&gt;p_ppid = rip-&gt;p_pid;</span><br><span class="line">   <span class="comment">// 执行时间为0</span></span><br><span class="line">	rpp-&gt;p_time = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	 * make duplicate entries</span></span><br><span class="line"><span class="comment">	 * where needed</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="comment">// 　由于子进程继承了由父进程打开的文件，因此这些文件的参照计数器都加 1。</span></span><br><span class="line">	<span class="keyword">for</span>(rip = &amp;u.u_ofile[<span class="number">0</span>]; rip &lt; &amp;u.u_ofile[NOFILE];)</span><br><span class="line">		<span class="keyword">if</span>((rpp = *rip++) != <span class="literal">NULL</span>)</span><br><span class="line">			rpp-&gt;f_count++;</span><br><span class="line">    <span class="comment">// 因为子进程与父进程指向text[]中相同的元素，所以此元素的参照计数器加上1。</span></span><br><span class="line">	<span class="keyword">if</span>((rpp=up-&gt;p_textp) != <span class="literal">NULL</span>) &#123;</span><br><span class="line">		rpp-&gt;x_count++;</span><br><span class="line">		rpp-&gt;x_ccount++;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// 由于子进程继承了当前目录的数据，因此inode[]中对应此目录的元素的参照计数器加上1。</span></span><br><span class="line">	u.u_cdir-&gt;i_count++;</span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	 * Partially simulate the environment</span></span><br><span class="line"><span class="comment">	 * of the new process so that when it is actually</span></span><br><span class="line"><span class="comment">	 * created (by copying) it will look right.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="comment">// 调用savu()，将 r5、r6的当前值暂存至user.u_rsav</span></span><br><span class="line">	savu(u.u_rsav);</span><br><span class="line">	rpp = p;</span><br><span class="line">    <span class="comment">// 暂时将父进程的 user.u_procp指向proc[]中代表子进程的元素。</span></span><br><span class="line">    <span class="comment">// 此时复制出来的父进程数据段，其user.u_procp将指向proc[]中代表子进程的元素</span></span><br><span class="line">	u.u_procp = rpp;</span><br><span class="line">    <span class="comment">// up是指向父进程proc结构体的指针</span></span><br><span class="line">	rip = up;</span><br><span class="line">    <span class="comment">// 此时rip指向父进程，n被赋为父进程数据段的长度</span></span><br><span class="line">	n = rip-&gt;p_size;</span><br><span class="line">    <span class="comment">// a1记录父进程数据段的起始地址</span></span><br><span class="line">	a1 = rip-&gt;p_addr;</span><br><span class="line">    <span class="comment">// 将子进程的p_size设置为父进程数据段的长度。</span></span><br><span class="line">	rpp-&gt;p_size = n;</span><br><span class="line">    <span class="comment">// 使用malloc开辟一个与父进程数据段长度相同的空间，起始地址为a2 </span></span><br><span class="line">	a2 = <span class="built_in">malloc</span>(coremap, n);</span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	 * If there is not enough core for the</span></span><br><span class="line"><span class="comment">	 * new process, swap out the current process to generate the</span></span><br><span class="line"><span class="comment">	 * copy.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">if</span>(a2 == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="comment">// 开辟失败 </span></span><br><span class="line">        <span class="comment">/* 如果内存没有足够的空间，父进程的数据段会被复制到交换空间（作为子进程的数据段），待数据从交换空间换入内存时再对其分配内存</span></span><br><span class="line"><span class="comment"> 		*/</span></span><br><span class="line">		rip-&gt;p_stat = SIDL;</span><br><span class="line">        <span class="comment">/* 将父进程的状态设置为SIDL。</span></span><br><span class="line"><span class="comment">        * 处于SIDL状态的进程不会被选中成为执行进程，也不会被换出至交换空间。</span></span><br><span class="line"><span class="comment">        * 执行第 62行的xswap()时，复制父进程的数据段到交换空间的处理被启动。</span></span><br><span class="line"><span class="comment">        * 在此处理过程中，父进程将暂时进入休眠状态。</span></span><br><span class="line"><span class="comment">        * 将其设置成SIDL状态是为了防止在复制处理中父进程成为执行进程，</span></span><br><span class="line"><span class="comment">        * 或其内存数据被换出导致数据发生变化。</span></span><br><span class="line"><span class="comment">		*/</span></span><br><span class="line">        <span class="comment">// 将子进程的数据段地址设为与父进程的数据段地址相同。</span></span><br><span class="line">		rpp-&gt;p_addr = a1;</span><br><span class="line">        <span class="comment">// 执行savu(u.u_ssav)，将 r5、r6的当前值暂存至u.u_ssav。</span></span><br><span class="line">        <span class="comment">// 因为数据段包含user结构体，所以u.u_ssav也将被复制到子进程。</span></span><br><span class="line">		savu(u.u_ssav);</span><br><span class="line">        <span class="comment">// 执行xswap()将数据从内存换到交换区。</span></span><br><span class="line">        <span class="comment">// 由于将rpp的p_addr设置为父进程的数据段地址，因此父进程的数据段成为处理对象</span></span><br><span class="line">		xswap(rpp, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">		rpp-&gt;p_flag =| SSWAP;</span><br><span class="line">        <span class="comment">// 复制结束，父进程进入SRUN状态</span></span><br><span class="line">		rip-&gt;p_stat = SRUN;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 开辟成功</span></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	 * There is core, so just copy.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">    <span class="comment">// 复制数据段</span></span><br><span class="line">		rpp-&gt;p_addr = a2;</span><br><span class="line">		<span class="keyword">while</span>(n--)</span><br><span class="line">			copyseg(a1++, a2++);</span><br><span class="line">	&#125;</span><br><span class="line">   	<span class="comment">// 将父进程的user.u_procp恢复原状后返回 0。</span></span><br><span class="line">	u.u_procp = rip;</span><br><span class="line">	<span class="keyword">return</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<center>
+    <img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/09/11/Unix%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%EF%BC%9A%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86-1/2.png">
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 1px;">数据段的复制示意图</div>
+</center>
+
+<p>几个注释：</p>
+<ul>
+<li>up为指向父进程proc结构体的指针 ,因为rip在75,76行被改变过。故通过up使rip指向父进程的proc结构体。</li>
+<li>p除了作为循环结构中的临时变量外，在之后还是指向子进程proc结构体的指针。因为rpp在80行被改变过，故需要在93行使其指向子进程的proc结构体。</li>
+<li>一般情况下， rip代表指向父进程proc结构体的指针。rpp代表指向子进程proc结构体的指针。</li>
+</ul>
+<h1 id="二-疑问"><a href="#二-疑问" class="headerlink" title="二.疑问"></a>二.疑问</h1><ol>
+<li><p>什么是<code>usr\source\s4\fork.s</code>文件中的返回值？</p>
+</li>
+<li><p><code>usr\source\s4\fork.s</code>中为什么要通过rts指令返回调用C语言库函数fork()的位置？</p>
+</li>
+</ol>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>小丑鱼Nemo</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://geyuyao-hub.github.io/2022/09/11/Unix%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%EF%BC%9A%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86-1/">https://geyuyao-hub.github.io/2022/09/11/Unix%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%EF%BC%9A%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86-1/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../../../../tags/Unix%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/"># Unix源码剖析</a>
+                    
+                        <a href="../../../../tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"># 操作系统</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../../12/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%EF%BC%9A%E7%AC%AC%E4%B8%80%E7%AB%A0%E7%BB%AA%E8%AE%BA/">数据库原理：第一章绪论</a>
+            
+            
+            <a class="next" rel="next" href="../../07/Unix%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%EF%BC%9A%E8%BF%9B%E7%A8%8B/">Unix源码剖析：进程</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 小丑鱼Nemo | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":300,"height":600},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
