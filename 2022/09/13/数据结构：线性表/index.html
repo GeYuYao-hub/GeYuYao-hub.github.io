@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="小丑鱼Nemo">
+
+
+
+    <meta name="description" content="广告位招租">
+
+
+
+<title>数据结构：线性表 | 小丑鱼Nemo的小窝</title>
+
+
+
+    <link rel="icon" href="../../../../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../../../../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../../../../js/script.js"></script>
+    
+    <script src="../../../../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">欢迎来到小丑鱼Nemo的小窝</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../../../../archives">Posts</a>
+                
+                    <a class="menu-item" href="../../../../category">Categories</a>
+                
+                    <a class="menu-item" href="../../../../tag">Tags</a>
+                
+                    <a class="menu-item" href="../../../../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">欢迎来到小丑鱼Nemo的小窝</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../../../../archives">Posts</a>
+                
+                    <a class="menu-item" href="../../../../category">Categories</a>
+                
+                    <a class="menu-item" href="../../../../tag">Tags</a>
+                
+                    <a class="menu-item" href="../../../../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">数据结构：线性表</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">小丑鱼Nemo</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">九月 13, 2022&nbsp;&nbsp;8:54:04</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../../../../categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86/">数据库原理</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="顺序线性表源码解析"><a href="#顺序线性表源码解析" class="headerlink" title="顺序线性表源码解析"></a>顺序线性表源码解析</h1><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/</span><br><span class="line">* 宏定义表初始长度,重新分配内存块增加的长度</span><br><span class="line">* 定义Sqlist结构体其中包含指向队头元素的指针,表长度,表大小</span><br><span class="line">* size是静态的,表示当前表的容量是多少,在重新分配内存块的时候才会被更改</span><br><span class="line">* length是动态的,表示当前表中有多少元素,在插入新的元素的时候会被修改</span><br><span class="line">* Sqlist表示顺序线性表</span><br><span class="line">*/</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_INIT_SIZE 100</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LISTINCREMENT 10</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span>&#123;</span><br><span class="line">    ElemType *elem;</span><br><span class="line">    <span class="type">int</span> length;</span><br><span class="line">    <span class="type">int</span> size;</span><br><span class="line">&#125;Sqlist;</span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* 传入一个Sqlist的结构体实例,通过引用的方式进行接收</span></span><br><span class="line"><span class="comment">* 首先使用malloc为顺序线性表分配空间</span></span><br><span class="line"><span class="comment">* 然后进行判断:是否成功分配空间，若未成功分配则退出</span></span><br><span class="line"><span class="comment">* 最后对length和size进行赋值</span></span><br><span class="line"><span class="comment">* 函数运行成功,返回OK状态</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function">Status <span class="title">InitList_sq</span><span class="params">(Sqlist &amp;L)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    L.elem=(ElemType *)<span class="built_in">malloc</span>(List_INIT_SIZE*<span class="built_in">sizeof</span>(ElemType));</span><br><span class="line">    <span class="keyword">if</span>(!L.elem)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">exit</span>(OVERFLOW);</span><br><span class="line">	&#125;</span><br><span class="line">    L.length=<span class="number">0</span>;</span><br><span class="line">    L.size=LIST_INIT_SIZE;</span><br><span class="line">    <span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="清空线性表"><a href="#清空线性表" class="headerlink" title="清空线性表"></a>清空线性表</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 直接将长度设置为0即可,以后再插入的时候覆盖旧元素</span></span><br><span class="line"><span class="function">Status <span class="title">ClearList_Sq</span><span class="params">(SqList &amp;L)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    L.length=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="销毁线性表"><a href="#销毁线性表" class="headerlink" title="销毁线性表"></a>销毁线性表</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 针对数组而言,free指向队头的指针即可释放空间</span></span><br><span class="line"><span class="function">Status <span class="title">DestroyList_Sq</span><span class="params">(SqList &amp;L)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 可替换为free(*(L.elem[0]))</span></span><br><span class="line">    <span class="built_in">free</span>(L.elem);</span><br><span class="line">    <span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* 通过引用的方式接收Sqlist结构体实例,插入的位置,插入元素的值</span></span><br><span class="line"><span class="comment">* 首先对i的合法性进行判断:i的最小值为1,最大值为L.length+1</span></span><br><span class="line"><span class="comment">* 接着对L的合法性进行判断:L.length不能大于L.size</span></span><br><span class="line"><span class="comment">* 若L不合法则需要重新分配内存空间</span></span><br><span class="line"><span class="comment">* 若成功分配则更新L.elem即顺序线性表的表头指针和L.size即原size加上新分配的内存大小</span></span><br><span class="line"><span class="comment">* 运行到第25行,所有的异常情况已被排除或修正,此时将q赋值为需要插入的位置的地址</span></span><br><span class="line"><span class="comment">* 需要注意的是:由于顺序线性表是通过指针创建的故其编号从0开始</span></span><br><span class="line"><span class="comment">* 将线性表中的元素向后移动一位,这里需要注意的是:由于是将元素从前向后移动,故需要从后往前遍历</span></span><br><span class="line"><span class="comment">* 移动结束后,将e赋值给q所指向的位置,更新length</span></span><br><span class="line"><span class="comment">* 函数运行成功,返回OK状态</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function">Status <span class="title">ListInsert_Sq</span><span class="params">(Sqlist &amp;L,<span class="type">int</span> i,ElemType e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> 	<span class="keyword">if</span>(i&lt;<span class="number">1</span> || i&gt;L.length+<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> ERROR;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">if</span>(L.length&gt;=L.size)</span><br><span class="line">    &#123;</span><br><span class="line">        newbase=(ElemType *)<span class="built_in">realloc</span>(L.elem,(L.size+LISTINCREMENT)*<span class="built_in">sizeof</span>(ElemType));</span><br><span class="line">        <span class="keyword">if</span>(!newbase)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">exit</span>(OVERFLOW);</span><br><span class="line">		&#125;</span><br><span class="line">        L.elem=newbase;</span><br><span class="line">        L.size+=LISTINCREMENT;</span><br><span class="line">	&#125;</span><br><span class="line">    q=&amp;(L.elem[i<span class="number">-1</span>]);</span><br><span class="line">    <span class="keyword">for</span>(p=&amp;(L.elem[L.length<span class="number">-1</span>]);p&gt;=q;p--)</span><br><span class="line">    &#123;</span><br><span class="line">        *(p+<span class="number">1</span>)=*(p);</span><br><span class="line">	&#125;</span><br><span class="line">    *q=e;</span><br><span class="line">    ++L.length;</span><br><span class="line">    <span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* 通过引用的方式接收Sqlist的实例,需要删除的位置的标号,通过引用的方式接收e</span></span><br><span class="line"><span class="comment">* 为什么要通过引用的方式接收e呢？</span></span><br><span class="line"><span class="comment">* 举例来讲,如果我们通过如下的方式调用ListDelete_Sq函数</span></span><br><span class="line"><span class="comment">* `int e;ListDelete_Sq(L,i,e);cout&lt;&lt;&quot;e&quot;&lt;&lt;endl;`</span></span><br><span class="line"><span class="comment">* 通过运行上一行代码,就可以实现删除L所描述的线性表中的第i个元素,并输出删除的这个元素的值</span></span><br><span class="line"><span class="comment">* 回归正题</span></span><br><span class="line"><span class="comment">* 首先对i的值进行检查,删除一个线性表中的元素,其标号取值一定属于[1,L.length]</span></span><br><span class="line"><span class="comment">* 若不符合上一行的要求,则返回ERROR表示出现错误</span></span><br><span class="line"><span class="comment">* 接着处理e,将要删除的元素的值赋给e</span></span><br><span class="line"><span class="comment">* 然后将删除的位置之后的元素向前一位</span></span><br><span class="line"><span class="comment">* 这里需要注意的是:由于是向前一位,故在遍历的时候需要从前往后遍历</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function">Status <span class="title">ListDelete_Sq</span><span class="params">(SqList &amp;L,<span class="type">int</span> i,ElemType &amp;e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(i&lt;<span class="number">1</span> || i&gt;L.length)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> ERROR;</span><br><span class="line">	&#125;</span><br><span class="line">    p=&amp;(L.elem[i<span class="number">-1</span>]);</span><br><span class="line">    e=*p;</span><br><span class="line">    q=L.elem[L.length<span class="number">-1</span>];</span><br><span class="line">    <span class="keyword">for</span>(p++;p&lt;=q;p++)</span><br><span class="line">    &#123;</span><br><span class="line">        *(p<span class="number">-1</span>)=*(p);</span><br><span class="line">	&#125;</span><br><span class="line">    L.length--;</span><br><span class="line">    <span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* 输入顺序线性表,待查找的值,函数做参数(不需要背,考试的时候直接用==就可以)</span></span><br><span class="line"><span class="comment">* 由于不需要对线性表进行修改,故不需要用引用的方式输入顺序线性表</span></span><br><span class="line"><span class="comment">* 遍历线性表,若当前元素不等于e,则继续查找,若等于则跳出循环</span></span><br><span class="line"><span class="comment">* 判断i的值</span></span><br><span class="line"><span class="comment">* 如果i的值属于[1,L.length]则说明L.elem[i-1]==e,即查找成功且线性表中第i个元素的值为e,返回i</span></span><br><span class="line"><span class="comment">* 如果i的值不在这个范围内,则说明遍历了一遍顺序线性表后,没有查找到指定的值,说明顺序线性表中不存在这个值,返回0</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">LocateElem_Sq</span><span class="params">(Sqlist L,ElemType e,Status(*compare)(ElemType,ElemType))</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    i=<span class="number">1</span>;</span><br><span class="line">    p=L.elem;</span><br><span class="line">    <span class="keyword">while</span>(i&lt;=L.length &amp;&amp; !(*compare)(*p++,e))i++;</span><br><span class="line">    <span class="keyword">if</span>(i&lt;=L.length)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> i;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>例题：</p>
+<p>两个线性表La,Lb，分别表示集合A和集合B，求新集合A &#x3D; A∪B（顺序存储结构存储）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 由于是顺序线性表故函数名中需要标注sq以此与链表区分</span></span><br><span class="line"><span class="comment">// 由于将La作为新的线性表,有对La的修改操作,故需要引用La</span></span><br><span class="line"><span class="comment">// 由于Lb仅需要做值传递,故不需要对Lb进行引用</span></span><br><span class="line"><span class="function"><span class="type">void</span>  <span class="title">union_sq</span> <span class="params">( SqList &amp;La , SqList  Lb )</span></span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">    La_len=La.length;Lb_len=Lb.length;</span><br><span class="line">    <span class="comment">// 遍历Lb</span></span><br><span class="line">  	<span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=Lb_len;i++)</span><br><span class="line">    &#123; </span><br><span class="line">        <span class="comment">// 获取Lb中第i个元素的值</span></span><br><span class="line">        e = Lb.elem[i<span class="number">-1</span>];</span><br><span class="line">        <span class="comment">// 如果La中不存在这个元素,那么就在La中加入这个元素</span></span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">LocateElem_Sq</span>(La,e,equal))</span><br><span class="line">            <span class="comment">// 此处不严谨,若La_len的值超过La.size就会造成溢出</span></span><br><span class="line">            La.elem[La_len++]=e;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 更新La的长度</span></span><br><span class="line">	La.length=La_len;</span><br><span class="line">&#125;  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>已知线性表LA和LB的数据元素按值有序排列，要求归并为一个线性表LC，且LC中数据元素仍按值有序， LA、LB、 LC均为顺序存储结构存储。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">MergeList_Sq</span><span class="params">(Sqlist La,Sqlist Lb,Sqlist Lc)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// pa,pb为遍历La,Lb所描述的顺序线性表的指针</span></span><br><span class="line">    pa=La.elem;</span><br><span class="line">    pb=Lb.elem;</span><br><span class="line">    <span class="comment">// 定义Lc的长度和大小</span></span><br><span class="line">    Lc.size=Lc.length=La.length+Lb.length;</span><br><span class="line">    <span class="comment">// 为Lc开辟内存空间</span></span><br><span class="line">    pc=Lc.elem=(ElemType *)<span class="built_in">malloc</span>(Lc.size*<span class="built_in">sizeof</span>(ElemType));</span><br><span class="line">    <span class="comment">// 若开辟失败则退出</span></span><br><span class="line">    <span class="keyword">if</span>(!Lc.elem)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">exit</span>(OVERFLOW);</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// 定义La和Lb所描述的线性表的最后一个元素,作为遍历的限定条件</span></span><br><span class="line">    pa_last=La.elem[La.length<span class="number">-1</span>];</span><br><span class="line">    pb_last=Lb.elem[Lb.length<span class="number">-1</span>];</span><br><span class="line">    <span class="comment">// 双指针,把pa和pb指的元素中小的那一个加入到Lc所描述的线性表中</span></span><br><span class="line">    <span class="keyword">while</span>(pa&lt;=pa_lase &amp;&amp; pb&lt;=pb_lase)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">switch</span>&#123;</span><br><span class="line">            <span class="keyword">case</span> *pa&lt;*pb:*(pc++)=*(pa++);<span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> *pa==*pb:*(pc++)=(*pa++);*(pc++)=(*pb++);<span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> *pa&gt;*pb:*(pc++)=*(pb++);<span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// 若Lb所描述的线性表先结束则将La中剩下的元素加入到Lc中</span></span><br><span class="line">    <span class="keyword">while</span>(pa&lt;=pa_lase)</span><br><span class="line">    &#123;</span><br><span class="line">        *(pc++)=*(pa++);</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// 若La所描述的线性表先结束则将Lb中剩下的元素加入到Lc中</span></span><br><span class="line">     <span class="keyword">while</span>(pb&lt;=pb_lase)</span><br><span class="line">    &#123;</span><br><span class="line">        *(pc++)=*(pb++);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="链表线性表源码解析"><a href="#链表线性表源码解析" class="headerlink" title="链表线性表源码解析"></a>链表线性表源码解析</h1><h3 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* 定义LNode结构体其中包含此节点存储的数据和指向下一个节点的指针</span></span><br><span class="line"><span class="comment">* LinkList是指向链表表头的指针</span></span><br><span class="line"><span class="comment">* 注意:在Init中,必须将LinkList指向malloc所生成的节点,否则不能使用LinkList,因为这是一个野指针</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">typedef</span>  <span class="keyword">struct</span>  <span class="title class_">LNode</span> &#123;</span><br><span class="line">    ElemType       data ;</span><br><span class="line">    <span class="keyword">struct</span>  <span class="title class_">LNode</span>  * next ;</span><br><span class="line">&#125; LNode , * LinkList ;</span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化-1"><a href="#初始化-1" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 链表头的LinkList所指向的表头元素是不存储数据的,其真正有用的仅为next</span></span><br><span class="line"><span class="function">Status <span class="title">InitList_L</span><span class="params">(LinkList &amp;L)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    L=(LNode *)<span class="built_in">malloc</span>(<span class="built_in">sizeof</span>(LNode));</span><br><span class="line">    <span class="keyword">if</span>(!L)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 何时是return OVERFLOW何时是exit(OVERFLOW)?</span></span><br><span class="line">        <span class="keyword">return</span> OVERFLOW;</span><br><span class="line">    &#125;</span><br><span class="line">    L-&gt;next=<span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="销毁链表线性表"><a href="#销毁链表线性表" class="headerlink" title="销毁链表线性表"></a>销毁链表线性表</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 链表的表头也被释放掉了</span></span><br><span class="line"><span class="function">Status <span class="title">DestroyList_L</span><span class="params">(LinkList &amp;L)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    p=L;</span><br><span class="line">    q=p-&gt;next;</span><br><span class="line">    <span class="comment">// q表示p的下一个节点,每一次释放的都是p,当下一个节点是NULL时跳出循环,此时p指向的空间还未被释放</span></span><br><span class="line">    <span class="keyword">while</span>(q!=<span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">free</span>(p);</span><br><span class="line">        p=q;</span><br><span class="line">        q=q-&gt;next;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// 释放p所指向的空间</span></span><br><span class="line">    free p;</span><br><span class="line">    <span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="按元素值查找"><a href="#按元素值查找" class="headerlink" title="按元素值查找"></a>按元素值查找</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">LocateElem_L</span><span class="params">(LinkList L,ElemType e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 等价于(*L).next</span></span><br><span class="line">    p=L-&gt;next;</span><br><span class="line">    <span class="comment">// 计数</span></span><br><span class="line">    n=<span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 若p所指不为空,且p所指向的元素的值不等于e</span></span><br><span class="line">    <span class="comment">// 两个条件不能调换顺序,因为只有p所指不为空才存在p-&gt;data否则会发生错误</span></span><br><span class="line">    <span class="keyword">while</span>(p!=<span class="literal">NULL</span> &amp;&amp; p-&gt;data!=e)</span><br><span class="line">    &#123;</span><br><span class="line">        p=p-&gt;next;</span><br><span class="line">        n++;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// p==NULL表示遍历链表后未发现存储着与e相等的值的节点</span></span><br><span class="line">    <span class="keyword">if</span>(p==<span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// 找到存储着与e相等的值的节点</span></span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="按标号查找"><a href="#按标号查找" class="headerlink" title="按标号查找"></a>按标号查找</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Status <span class="title">GetElem_L</span><span class="params">(LinkList L,<span class="type">int</span> i,ElemType &amp;e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 表头不记录数据,也不占标号</span></span><br><span class="line">    p=L-&gt;next;</span><br><span class="line">    <span class="comment">// 计数</span></span><br><span class="line">    j=<span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 当p存在且j&lt;i,当j==i时跳出</span></span><br><span class="line">    <span class="comment">// 不可调换</span></span><br><span class="line">    <span class="keyword">while</span>(p &amp;&amp; j&lt;i)</span><br><span class="line">    &#123;</span><br><span class="line">        p=p-&gt;next;</span><br><span class="line">        j++;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// p存在或i等于0</span></span><br><span class="line">    <span class="keyword">if</span>(!p||j&gt;i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> ERROR;</span><br><span class="line">    &#125;</span><br><span class="line">    e=p-&gt;data;</span><br><span class="line">    <span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="插入-1"><a href="#插入-1" class="headerlink" title="插入"></a>插入</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Status <span class="title">ListInsert</span><span class="params">(LinkList L,<span class="type">int</span> i,ElemType e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 按标号查找的过程与上一段源码一样</span></span><br><span class="line">    p=L-&gt;next;</span><br><span class="line">    j=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(p&amp;&amp;j&lt;i)</span><br><span class="line">    &#123;</span><br><span class="line">        p=p-&gt;next;</span><br><span class="line">        j++;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">if</span>(!p||j&gt;i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> ERROR;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// 为新节点开辟空间</span></span><br><span class="line">    s=(LNode *)<span class="built_in">malloc</span>(<span class="built_in">sizeof</span>(LNode));</span><br><span class="line">    <span class="comment">// 开辟失败</span></span><br><span class="line">    <span class="keyword">if</span>(!s)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> OVERFLOW;</span><br><span class="line">	&#125;</span><br><span class="line">    s-&gt;next=p-&gt;next;</span><br><span class="line">    p-&gt;next=s;</span><br><span class="line">    s-&gt;data=e;</span><br><span class="line">    <span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Status <span class="title">ListDelete</span><span class="params">(LinkList L,<span class="type">int</span> i,ElemType &amp;e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 按标号查找第i-1个节点</span></span><br><span class="line">    p=L-&gt;next;</span><br><span class="line">    j=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(p&amp;&amp;j&lt;i<span class="number">-1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        p=p-&gt;next;</span><br><span class="line">        j++;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">if</span>(!(p-&gt;next)||j&gt;i<span class="number">-1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> ERROR;</span><br><span class="line">	&#125;</span><br><span class="line">    q=p-&gt;next;</span><br><span class="line">    p-&gt;next=q-&gt;next;</span><br><span class="line">    e=q-&gt;data;</span><br><span class="line">    <span class="built_in">free</span>(q);</span><br><span class="line">    <span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>例题：</p>
+<p>两个有序链表合并成有序链表</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">MergeList_L</span><span class="params">(LinkList &amp;La,LinkList &amp;Lb,LinkList &amp;Lc)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    pa=La-&gt;next;</span><br><span class="line">    pb=Lb-&gt;next;</span><br><span class="line">    <span class="comment">// 将La所指向的表头作为Lc的表头</span></span><br><span class="line">    Lc=pc=La;</span><br><span class="line">    <span class="comment">// 如果pa和pb均不是NULL</span></span><br><span class="line">    <span class="keyword">while</span>(pa&amp;&amp;pb)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(pa-&gt;data&lt;pb-&gt;data)</span><br><span class="line">        &#123;</span><br><span class="line">            pc-&gt;next=pa;</span><br><span class="line">            pc=pa;</span><br><span class="line">            pa=pa-&gt;next;</span><br><span class="line">		&#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            pc-&gt;next=pb;</span><br><span class="line">            pc=pb;</span><br><span class="line">            pb=pb-&gt;next;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// 跳出while循环一定是pa和pb中至少有一是NULL</span></span><br><span class="line">    <span class="keyword">if</span>(!pa)</span><br><span class="line">    &#123;</span><br><span class="line">        pc-&gt;next=pa;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">if</span>(!pb)</span><br><span class="line">    &#123;</span><br><span class="line">        pc-&gt;next=pb;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="built_in">free</span>(Lb);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>设$C&#x3D;{a_1 ,b_1 ,a_2 ,b_2,…,a_n ,b_n}$为一线性表,采用带头结点的hc单链表存放,编写一个算法,将其拆分为两个线性表,使得:$A&#x3D;{a_1 ,a_2,…,a_n },B&#x3D;{b_1 ,b_2,…,b_n}$</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">split</span><span class="params">(LinkList hc,LinkList &amp;ha,LinkList &amp;hb)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// p指向第一个有数据的节点</span></span><br><span class="line">    LinkList p=hc-&gt;next;</span><br><span class="line">   	<span class="comment">// hc指向的节点作为ha指向的节点</span></span><br><span class="line">    ha=hc;</span><br><span class="line">    <span class="comment">// 由于头节点只有*hc一个故hb指向的节点需要另外创建</span></span><br><span class="line">    hb=(LNode *)<span class="built_in">malloc</span>(<span class="built_in">sizeof</span>(LNode));</span><br><span class="line">    pa=ha;</span><br><span class="line">    pb=hb;</span><br><span class="line">    <span class="comment">// 每循环一次p向后走两个节点</span></span><br><span class="line">    <span class="keyword">while</span>(p!=<span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        pa-&gt;next=p;</span><br><span class="line">        pa=p;</span><br><span class="line">        p=p-&gt;next;</span><br><span class="line">        <span class="keyword">if</span>(p!=<span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            pb-&gt;next=p;</span><br><span class="line">            pb=p;</span><br><span class="line">            p=p-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 赋空值</span></span><br><span class="line">    pa-&gt;next=pb-&gt;next=<span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>小丑鱼Nemo</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://geyuyao-hub.github.io/2022/09/13/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9A%E7%BA%BF%E6%80%A7%E8%A1%A8/">https://geyuyao-hub.github.io/2022/09/13/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9A%E7%BA%BF%E6%80%A7%E8%A1%A8/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../../../../tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"># 数据库</a>
+                    
+                        <a href="../../../../tags/%E8%AF%BE%E5%86%85%E7%AC%94%E8%AE%B0/"># 课内笔记</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="../../12/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%EF%BC%9A%E7%AC%AC%E4%B8%80%E7%AB%A0%E7%BB%AA%E8%AE%BA/">数据库原理：第一章绪论</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 小丑鱼Nemo | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":300,"height":600},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
