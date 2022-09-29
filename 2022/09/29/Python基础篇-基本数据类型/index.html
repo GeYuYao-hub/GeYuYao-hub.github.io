@@ -43,6 +43,45 @@
     
     
         
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
     
 
 
@@ -129,6 +168,71 @@
                 <div class="container">
     
     
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
 
     
     <article class="post-wrap">
@@ -146,12 +250,39 @@
                         </span>
                     
                     
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../../../../categories/python%E5%AD%A6%E4%B9%A0/">python学习</a>
+                            
+                        </span>
+                    
                 </div>
             
         </header>
 
         <div class="post-content">
-            
+            <h1 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h1><h2 id="字符串处理"><a href="#字符串处理" class="headerlink" title="字符串处理"></a>字符串处理</h2><h3 id="第一关-字符串的拼接：名字的组成"><a href="#第一关-字符串的拼接：名字的组成" class="headerlink" title="第一关 字符串的拼接：名字的组成"></a>第一关 字符串的拼接：名字的组成</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding=utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 存放姓氏和名字的变量</span></span><br><span class="line">first_name = <span class="built_in">input</span>()</span><br><span class="line">last_name = <span class="built_in">input</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 请在下面添加字符串拼接的代码，完成相应功能</span></span><br><span class="line"><span class="comment">########## Begin ##########</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(first_name + <span class="string">&#x27; &#x27;</span> + last_name)</span><br><span class="line"></span><br><span class="line"><span class="comment">########## End ##########</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="第二关-字符转换"><a href="#第二关-字符转换" class="headerlink" title="第二关 字符转换"></a>第二关 字符转换</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding=utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取待处理的源字符串</span></span><br><span class="line">source_string = <span class="built_in">input</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 请在下面添加字符串转换的代码</span></span><br><span class="line"><span class="comment">########## Begin ##########</span></span><br><span class="line"></span><br><span class="line">source_string=source_string.strip()</span><br><span class="line">source_string=source_string.title()</span><br><span class="line"><span class="built_in">print</span>(source_string)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(source_string))</span><br><span class="line"></span><br><span class="line"><span class="comment">########## End ##########</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="第三关-字符串查找与替换"><a href="#第三关-字符串查找与替换" class="headerlink" title="第三关 字符串查找与替换"></a>第三关 字符串查找与替换</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding = utf-8</span></span><br><span class="line">source_string = <span class="built_in">input</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 请在下面添加代码</span></span><br><span class="line"><span class="comment">########## Begin ##########</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(source_string.find(<span class="string">&#x27;day&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(source_string.replace(<span class="string">&#x27;day&#x27;</span>,<span class="string">&#x27;time&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(source_string.replace(<span class="string">&#x27;day&#x27;</span>,<span class="string">&#x27;time&#x27;</span>).split(<span class="string">&#x27; &#x27;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">########## End ##########</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Python的几种数据结构"><a href="#Python的几种数据结构" class="headerlink" title="Python的几种数据结构"></a>Python的几种数据结构</h2><h3 id="第一关：列表及操作"><a href="#第一关：列表及操作" class="headerlink" title="第一关：列表及操作"></a>第一关：列表及操作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding = utf-8</span></span><br><span class="line"><span class="comment">#********* Begin *********#</span></span><br><span class="line"><span class="comment">#第一步 请在列表fruits中找出不属于水果一类元素，赋值给变量 a</span></span><br><span class="line">fruit = [<span class="string">&quot;苹果&quot;</span>,<span class="string">&quot;梨子&quot;</span>,<span class="string">&quot;菠萝&quot;</span>,<span class="string">&quot;黄瓜&quot;</span>,<span class="string">&quot;香蕉&quot;</span>]</span><br><span class="line">a = fruit[<span class="number">3</span>]</span><br><span class="line">    </span><br><span class="line"><span class="comment">#第二步 将变量 a 的值添加到列表vegetable 的末尾</span></span><br><span class="line">vegetable = [<span class="string">&quot;土豆&quot;</span>,<span class="string">&quot;萝卜&quot;</span>,<span class="string">&quot;茄子&quot;</span>,<span class="string">&quot;白菜&quot;</span>]</span><br><span class="line"></span><br><span class="line">vegetable.append(a)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#第三步 删去列表fruit中不属于水果的元素</span></span><br><span class="line"></span><br><span class="line">fruit.pop(<span class="number">3</span>)</span><br><span class="line"><span class="comment"># fruit.remove(&quot;黄瓜&quot;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#第四步 将列表fruit和列表vegetable作为元素按顺序加入到列表food中</span></span><br><span class="line">food = []</span><br><span class="line">food = [fruit,vegetable]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#补充print语句，先打印输出列表food，再打印输出列表food中第1个列表的第3个元素</span></span><br><span class="line"><span class="built_in">print</span>( food )</span><br><span class="line"><span class="built_in">print</span>( food[<span class="number">0</span>][<span class="number">2</span>])</span><br><span class="line"><span class="comment">#********* End *********#</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="第二关：元组及操作"><a href="#第二关：元组及操作" class="headerlink" title="第二关：元组及操作"></a>第二关：元组及操作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding = utf-8</span></span><br><span class="line"><span class="comment">#********* Begin *********#</span></span><br><span class="line"><span class="comment">#第一题  列表和元组相互转换，修改元组中的数据</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#第一步  将元组 fruit 转换为一个名为 fruit 的列表并打印输出</span></span><br><span class="line">fruit = (<span class="string">&quot;苹果&quot;</span>,<span class="string">&quot;梨子&quot;</span>,<span class="string">&quot;菠萝&quot;</span>,<span class="string">&quot;黄瓜&quot;</span>,<span class="string">&quot;香蕉&quot;</span>)</span><br><span class="line">fruit = <span class="built_in">list</span>(fruit)</span><br><span class="line"><span class="built_in">print</span>(fruit)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#第二步  在上一步得到的列表 fruit 通过索引位置将&quot;黄瓜&quot;去掉并打印输出</span></span><br><span class="line"></span><br><span class="line">fruit.pop(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(fruit)</span><br><span class="line"></span><br><span class="line"><span class="comment">#第三步  将上一步的到的列表 fruit 转换为元组并打印输出</span></span><br><span class="line"></span><br><span class="line">fruit = <span class="built_in">tuple</span>(fruit)</span><br><span class="line"><span class="built_in">print</span>(fruit)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#第二题  通过元组的嵌套修改元组中的数据</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#第一步  创建元组 food 将列表 fruit 和 vegetable 放入其中并打印输出元组food</span></span><br><span class="line"></span><br><span class="line">fruit = [<span class="string">&quot;苹果&quot;</span>,<span class="string">&quot;梨子&quot;</span>,<span class="string">&quot;菠萝&quot;</span>,<span class="string">&quot;黄瓜&quot;</span>,<span class="string">&quot;香蕉&quot;</span>]</span><br><span class="line">vegetable = [<span class="string">&quot;土豆&quot;</span>,<span class="string">&quot;萝卜&quot;</span>,<span class="string">&quot;茄子&quot;</span>,<span class="string">&quot;白菜&quot;</span>]</span><br><span class="line">food = (fruit,vegetable)</span><br><span class="line"><span class="built_in">print</span>(food)</span><br><span class="line"></span><br><span class="line"><span class="comment">#第二步  打印输出上一步得到的元组 food 的第一个元素（列表fruit）</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>( food[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">#第三步  通过索引位置去掉元组 food 的第一个元素（列表fruit）的&quot;黄瓜&quot;</span></span><br><span class="line"></span><br><span class="line">food[<span class="number">0</span>].pop(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>( food[<span class="number">0</span>])          <span class="comment">#打印输出元组 food 的第一个元素</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#第四步  打印输出元组 food </span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(food)</span><br><span class="line"><span class="comment">#********* End *********#</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="第三关-集合及操作"><a href="#第三关-集合及操作" class="headerlink" title="第三关 集合及操作"></a>第三关 集合及操作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment">#********* Begin *********#</span></span><br><span class="line"><span class="comment">#第一步 请将列表fruit转换为一个集合</span></span><br><span class="line">fruit = [<span class="string">&quot;苹果&quot;</span>,<span class="string">&quot;梨子&quot;</span>,<span class="string">&quot;菠萝&quot;</span>,<span class="string">&quot;黄瓜&quot;</span>,<span class="string">&quot;香蕉&quot;</span>]</span><br><span class="line">fruit = <span class="built_in">set</span>(fruit)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#第二步 将集合fruit中的“黄瓜”去掉</span></span><br><span class="line"></span><br><span class="line">fruit.remove(<span class="string">&#x27;黄瓜&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#第三步 使用&quot;in&quot;判断&quot;黄瓜&quot;是否在fruit中，将判断结果打印输出</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>( <span class="string">&#x27;黄瓜&#x27;</span> <span class="keyword">in</span> fruit)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#第四步 创建空集合food，输出集合food的长度</span></span><br><span class="line"></span><br><span class="line">food = <span class="built_in">set</span>()</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(food) )</span><br><span class="line"></span><br><span class="line"><span class="comment">#第五步 将fruit和vegetable通过集合运算“并集”合并到food并输出此时food的长度</span></span><br><span class="line"></span><br><span class="line">vegetable = &#123;<span class="string">&quot;土豆&quot;</span>,<span class="string">&quot;萝卜&quot;</span>,<span class="string">&quot;茄子&quot;</span>,<span class="string">&quot;白菜&quot;</span>&#125;</span><br><span class="line">food = fruit | vegetable </span><br><span class="line"><span class="built_in">print</span>( <span class="built_in">len</span>(food))</span><br><span class="line"><span class="comment">#********* End *********#</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="第四关-字典及操作"><a href="#第四关-字典及操作" class="headerlink" title="第四关 字典及操作"></a>第四关 字典及操作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment">#********* Begin *********#</span></span><br><span class="line"><span class="comment">#第一步 创建一个空字典 menu</span></span><br><span class="line"></span><br><span class="line">menu=&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#第二步 将列表fruit中水果与prices中的价格对应给menu赋值并输出</span></span><br><span class="line">fruit = [<span class="string">&quot;苹果&quot;</span>,<span class="string">&quot;梨子&quot;</span>,<span class="string">&quot;菠萝&quot;</span>,<span class="string">&quot;黄瓜&quot;</span>,<span class="string">&quot;香蕉&quot;</span>]</span><br><span class="line">prices = [<span class="number">2</span>,<span class="number">3</span>,<span class="number">10</span>,<span class="number">2</span>,<span class="number">1</span>]</span><br><span class="line">menu = &#123;<span class="string">&quot;苹果&quot;</span>:<span class="number">2</span>,<span class="string">&quot;梨子&quot;</span>:<span class="number">3</span>,<span class="string">&quot;菠萝&quot;</span>:<span class="number">10</span>,<span class="string">&quot;黄瓜&quot;</span>:<span class="number">2</span>,<span class="string">&quot;香蕉&quot;</span>:<span class="number">1</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(menu)</span><br><span class="line"></span><br><span class="line"><span class="comment">#第三步 将20块钱的&quot;哈密瓜&quot;添加到字典menu中并输出</span></span><br><span class="line"></span><br><span class="line">menu[<span class="string">&#x27;哈密瓜&#x27;</span>]=<span class="number">20</span></span><br><span class="line"><span class="built_in">print</span>(menu)</span><br><span class="line"></span><br><span class="line"><span class="comment">#第四步 将&quot;黄瓜&quot;从menu中去掉并输出</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">del</span> menu[<span class="string">&#x27;黄瓜&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(menu)</span><br><span class="line"></span><br><span class="line"><span class="comment">#第五步 将菠萝的价格修改为9.9，打印输出menu</span></span><br><span class="line"></span><br><span class="line">menu[<span class="string">&#x27;菠萝&#x27;</span>]=<span class="number">9.9</span></span><br><span class="line"><span class="built_in">print</span>(menu)</span><br><span class="line"><span class="comment">#********* End *********#</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Python基础数值运算、组合数据类型的基本操作"><a href="#Python基础数值运算、组合数据类型的基本操作" class="headerlink" title="Python基础数值运算、组合数据类型的基本操作"></a>Python基础数值运算、组合数据类型的基本操作</h2><h3 id="第一关-球体体积计算"><a href="#第一关-球体体积计算" class="headerlink" title="第一关 球体体积计算"></a>第一关 球体体积计算</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#calvolumesph.py</span></span><br><span class="line">r=<span class="built_in">eval</span>(<span class="built_in">input</span>())</span><br><span class="line"><span class="comment">#********* Begin *********#</span></span><br><span class="line">S=<span class="number">4</span>/<span class="number">3</span>*<span class="number">3.14159</span>*r**<span class="number">3</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">round</span>(S,<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#********* End *********#</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="第二关-字符串操作练习"><a href="#第二关-字符串操作练习" class="headerlink" title="第二关 字符串操作练习"></a>第二关 字符串操作练习</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">strA = <span class="built_in">input</span>()</span><br><span class="line">strB = <span class="built_in">input</span>()</span><br><span class="line"><span class="comment">#********* Begin *********#</span></span><br><span class="line"><span class="built_in">print</span>(strA[<span class="number">0</span>])</span><br><span class="line"><span class="built_in">print</span>(strA[:-<span class="number">2</span>])</span><br><span class="line"><span class="built_in">print</span>(strA+<span class="string">&#x27; &#x27;</span>+strB)</span><br><span class="line"><span class="comment">#********* End *********#</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="第三关-集合类型的操作练习"><a href="#第三关-集合类型的操作练习" class="headerlink" title="第三关 集合类型的操作练习"></a>第三关 集合类型的操作练习</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">S = &#123;<span class="number">128</span>,<span class="string">&quot;SET&quot;</span>,<span class="string">&quot;Student&quot;</span>,<span class="number">547</span>&#125;</span><br><span class="line">T = &#123;<span class="string">&quot;Student&quot;</span>,<span class="string">&quot;CS&quot;</span>,<span class="string">&quot;XTU&quot;</span>,<span class="number">548</span>&#125;</span><br><span class="line">x = <span class="string">&quot;set&quot;</span></span><br><span class="line"><span class="comment">#********* Begin *********#</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(x <span class="keyword">in</span> S)</span><br><span class="line">S.add(x)</span><br><span class="line"><span class="built_in">print</span>(x <span class="keyword">in</span> S)</span><br><span class="line"></span><br><span class="line"><span class="comment">#********* End *********#</span></span><br></pre></td></tr></table></figure>
+
+
         </div>
 
         
@@ -188,6 +319,10 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
+                    
+                        <a href="../../../../tags/Python/"># Python</a>
+                    
+                        
                 </span>
             </div>
             <div>
