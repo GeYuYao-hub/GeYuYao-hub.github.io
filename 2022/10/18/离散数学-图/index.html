@@ -15,7 +15,7 @@
 
 
 
-<title>离散数学:数理逻辑 | 小丑鱼Nemo的小窝</title>
+<title>离散数学:图[1] | 小丑鱼Nemo的小窝</title>
 
 
 
@@ -237,7 +237,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">离散数学:数理逻辑</h1>
+            <h1 class="post-title">离散数学:图[1]</h1>
             
                 <div class="post-meta">
                     
@@ -246,7 +246,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">九月 15, 2022&nbsp;&nbsp;20:51:18</a>
+                        Date: <a href="#">十月 18, 2022&nbsp;&nbsp;20:23:30</a>
                         </span>
                     
                     
@@ -262,54 +262,130 @@
         </header>
 
         <div class="post-content">
-            <h3 id="命题"><a href="#命题" class="headerlink" title="命题"></a>命题</h3><p>定义：唯一<strong>确定真值</strong>的<strong>陈述句</strong></p>
-<h3 id="逻辑连接词"><a href="#逻辑连接词" class="headerlink" title="逻辑连接词"></a>逻辑连接词</h3><p>条件：与日常用语中的 如果…则,必须…以便,等含义相当。</p>
-<p>双条件：与日常用语中的当且仅当,充分必要,只有且仅有…才能等含义相当。</p>
-<h3 id="命题公式与赋值"><a href="#命题公式与赋值" class="headerlink" title="命题公式与赋值"></a>命题公式与赋值</h3><p>错误的命题：</p>
+            <h3 id="图的基本概念"><a href="#图的基本概念" class="headerlink" title="图的基本概念"></a>图的基本概念</h3><p><strong>握手定理</strong>:任一图的结点度数之和&#x3D;边数的二倍</p>
+<p>即 $\sum_{v\in V} d(v) &#x3D; 2 |E|$</p>
+<p><strong>推论</strong>:任何图中度数为奇数的结点个数为偶数</p>
+<blockquote>
+<p>因为结点度数之和一定是偶数，且<strong>度数为偶数的结点</strong>的度数之和一定是偶数，故<strong>度数为奇数的结点</strong>的度数之和也需要是偶数。若<strong>度数为奇数的结点</strong>的数量为奇数，则<strong>度数为奇数的结点</strong>的度数之和一定是奇数。因此只能当<strong>度数为奇数的结点</strong>的数量为偶数时才能满足握手定理。</p>
+</blockquote>
+<p><strong>定理</strong>:在有向图中，入度之和&#x3D;出度之和</p>
+<p><strong>多重图</strong>:含有平行边(联结同一对结点的多条边)的图称为多重图</p>
+<p><strong>简单图</strong>:不含平行边和环的图称为简单图</p>
+<p><strong>无向完全图</strong>:无向简单图G&#x3D;&lt;V,E&gt;中,若每一对不同结点间都有一边相连,则该图称为无向完全图</p>
+<blockquote>
+<p>含有$n$个结点的无向完全图记为$K_n$</p>
+<p>其边数为 $\frac{1}{2} n(n-1)$</p>
+</blockquote>
+<p><strong>有向完全图</strong>:无向简单图G&#x3D;&lt;V,E&gt;中,若每一对不同结点间都有一边相连,则该图称为无向完全图</p>
+<p><strong>补图</strong>:给定一个图G,由G中所有结点和所有能使G成为完全图的添加边组成的图,称为G的相对于完全图的补图<br>(G的补图),记作$\overline{G}$</p>
+<p><strong>子图</strong>:设图G&#x3D;&lt;V,E&gt;,如果有图 G‘&#x3D;&lt;V’,E‘&gt;,使得E’$\in$E, V‘$\in$V, 则称G’为G的子图。记作G‘$\in$G。 </p>
+<blockquote>
+<p>拥有原图的一些点和一些边</p>
+</blockquote>
+<p><strong>生成子图</strong>:若G’是G的子图,且V’&#x3D;V,称G’为G的生成子图。</p>
+<blockquote>
+<p>拥有原图的所有点和一些边</p>
+</blockquote>
+<p><strong>相对补</strong>:设G’&#x3D;&lt;V’,E’&gt;是图G&#x3D;&lt;V,E&gt;的子图,若有另一图G”&#x3D;&lt;V”, E” &gt;, 使得 E”&#x3D;E - E‘, 且V”中仅包含E”的边所关联的结点。则称G”是子图G’的相对于图G的补图(G的相对补)。记作G”&#x3D; G- G’.</p>
+<p><strong>同构</strong>:若两图同构则它们的结点数相同,边数相同,且度数相同的结点数相同。</p>
+<center>
+    <img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/10/18/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E5%9B%BE/1.png">
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 1px;">同构</div>
+</center>
+
+<h3 id="路与回路"><a href="#路与回路" class="headerlink" title="路与回路"></a>路与回路</h3><p><strong>路</strong>:边与点交替的序列称为路</p>
+<p><strong>路的长度</strong>:路中边的数量</p>
+<p><strong>回路(闭路)</strong>:起点和终点一样</p>
+<p><strong>迹(链)</strong>:路的各边不相同</p>
+<p><strong>通路</strong>:路的各点不相同</p>
+<p><strong>圈</strong>:闭的通路</p>
+<p><strong>推论</strong>:在n阶图中，如果从u到v存在通路，则从u到v存在长度小于等于n-1</p>
+<p><strong>联通分支</strong>:极大联通子图</p>
+<p><strong>联通分支数</strong>:联通分支的数量</p>
+<p><strong>点割集</strong>:设G&#x3D;&lt;V,E&gt;为无向连通图,若有点集V1$\in$V, 使G删除V1所有点后,所得的子图不连通; 而删除V1的任何真子集后仍连通, 则称V1是G的一个点割集。<strong>若点割集只含有一个结点,则该结点称为割点。</strong></p>
+<p><strong>点连通度</strong>:连通图的最小点割集的阶</p>
+<blockquote>
+<p>不连通图: k(G)&#x3D;0<br>存在割点的连通图: k(G)&#x3D;1<br>平凡图: k(G)&#x3D;0 (可视为连通或不连通)<br>完全图: k(Kn)&#x3D;n-1</p>
+</blockquote>
+<center>
+    <img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/10/18/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E5%9B%BE/2.png">
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 1px;">例图</div>
+</center>
+
+<p>在此图中，点割集为{b,d,e}，{b,d}，{c}，{a,c}。点连通度为1。</p>
+<p><strong>边割集</strong>:设G&#x3D;&lt;V,E&gt;为无向连通图,若有边集E1$\in$E, 使图G删除E1中所有边后得到的子图不连通; 而删除E1的任何真子集后仍连通, 则称E1是G的一个边割集。若<strong>边割集只含一边,则称该边称为割边(桥)。</strong></p>
+<p><strong>边连通度</strong>:连通图的最小边割集的阶</p>
+<blockquote>
+<p>不连通图: $\lambda$(G)&#x3D;0</p>
+<p>存在割边的连通图: $\lambda$(G)&#x3D;1</p>
+<p>平凡图:$\lambda$(G)&#x3D;0 (可视为连通或不连通)</p>
+<p>完全图: $\lambda$($K_n$)&#x3D;n-1;</p>
+</blockquote>
+<center>
+    <img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/10/18/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E5%9B%BE/3.png">
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 1px;">例图</div>
+</center>
+
+<p>在此图中，边割集为{$e_1,e_3$}，{$e_2,e_4$}，{$e_5$}，{$e_3,e_4$}，{$e_1,e_2$}，{$e_2,e_4,e_5$}，{$e_1,e_3,e_5$}等。边连通度为1。</p>
+<p><strong>求图的点连通度和边连通度：</strong></p>
+<center>
+    <img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/10/18/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E5%9B%BE/4.png">
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 1px;">例图</div>
+</center>
+
+<p>点连通度：2</p>
+<blockquote>
+<p>删除u,v</p>
+</blockquote>
+<p>边连通度：3</p>
+<blockquote>
+<p>删除中间的三条边</p>
+</blockquote>
+<p><strong>定理</strong>:对于任何图G,有$k(G) \leqslant \lambda(G) \leqslant \delta(G)$</p>
+<blockquote>
+<p>点连通度:$k(G)$</p>
+<p>边连通度:$\lambda(G)$</p>
+<p>点的最小度:$\delta(G)$</p>
+</blockquote>
+<p><strong>定理</strong>:一个连通无向图G中的结点v是<strong>割点</strong>,当且仅当<strong>存在</strong>结点u和w,使得u,w之间的<strong>每条路</strong>都通过v。</p>
+<p><strong>可达性</strong>:</p>
 <ul>
-<li>$(P)$  × (多括号)</li>
-<li>$(P \rightarrow Q),(P\wedge Q)\rightarrow Q)$ × (非法字符)</li>
+<li>在无向图中,若从u到v可达, 则从v到u必可达。</li>
+<li>在有向图中,若从u到v可达, 则从v到u未必可达。 <ul>
+<li>G是单侧连通的,若$\forall$u,v$\in$V,必有u可达v或 v可达u。</li>
+<li>G是强连通的,若$\forall$u,v$\in$V,u,v都互相可达。</li>
+<li>G为弱连通的,若略去边的方向,作为无向图是连通的。</li>
+<li>有向图是强连通的,当且仅当G中有一个回路,它至少包含每个结点一次。</li>
 </ul>
-<p><strong>含有n个不同变元的公式有$2^n$个不同赋值。</strong></p>
-<p><strong>含有n个分量$P_1,P_2,…,P_n$的命题公式可有无穷多个, 但互不等价的公式只有$2^{2^{n}}$个。</strong></p>
-<h3 id="对偶与范式"><a href="#对偶与范式" class="headerlink" title="对偶与范式"></a>对偶与范式</h3><p>在给定的命题公式中,将联结词$\vee$换成$\wedge$,将$\wedge$换成$\vee$,若有特殊变元F和T亦相互取代,所得公式A称为A的对偶式。</p>
-<p>$(A^{<em>})^{</em>}&#x3D;A$</p>
-<center>
-    <img style="border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/09/15/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E6%95%B0%E7%90%86%E9%80%BB%E8%BE%91/1.png">
-    <br>
-    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
-    display: inline-block;
-    color: #999;
-    padding: 1px;">对偶式性质</div>
-</center>
-
-<center>
-    <img style="border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/09/15/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E6%95%B0%E7%90%86%E9%80%BB%E8%BE%91/2.png">
-    <br>
-    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
-    display: inline-block;
-    color: #999;
-    padding: 1px;">对偶定理</div>
-</center>
-
-<h3 id="范式"><a href="#范式" class="headerlink" title="范式"></a>范式</h3><p><strong>合取范式：</strong></p>
-<p>项之间用析取号连接</p>
-<center>
-    <img style="border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/09/15/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E6%95%B0%E7%90%86%E9%80%BB%E8%BE%91/3.png">
-    <br>
-    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
-    display: inline-block;
-    color: #999;
-    padding: 1px;">合取范式</div>
-</center>
-
-<p><strong>析取范式同理</strong></p>
-<p><strong>主析取范式</strong></p>
-<p>由小项组成，小项由合取号构成。小项中包含所有的变元。小项用m表示。</p>
-<p><strong>主合取范式同理</strong></p>
+</li>
+</ul>
+<p><strong>定理</strong>:在简单有向图中</p>
+<ul>
+<li>具有强连通性的最大子图,称为强分图;</li>
+<li>具有单侧连通性的最大子图,称为单侧分图;    </li>
+<li>具有弱连通性的最大子图,称为弱分图。</li>
+</ul>
+<p><strong>定理</strong>:有向图的每个结点位于且只位于一个强分图中。</p>
 
         </div>
 
@@ -324,7 +400,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://geyuyao-hub.github.io/2022/09/15/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E6%95%B0%E7%90%86%E9%80%BB%E8%BE%91/">https://geyuyao-hub.github.io/2022/09/15/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E6%95%B0%E7%90%86%E9%80%BB%E8%BE%91/</a></span>
+                        <span><a href="https://geyuyao-hub.github.io/2022/10/18/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E5%9B%BE/">https://geyuyao-hub.github.io/2022/10/18/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E5%9B%BE/</a></span>
                     </p>
                 
                 
@@ -363,10 +439,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="../../../10/18/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E5%9B%BE/">离散数学:图[1]</a>
             
-            
-            <a class="next" rel="next" href="../../13/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9A%E7%BA%BF%E6%80%A7%E8%A1%A8/">数据结构：线性表</a>
+            <a class="next" rel="next" href="../../../09/15/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E6%95%B0%E7%90%86%E9%80%BB%E8%BE%91/">离散数学:数理逻辑</a>
             
         </section>
 
