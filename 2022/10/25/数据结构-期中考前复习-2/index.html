@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="小丑鱼Nemo">
+
+
+
+    <meta name="description" content="广告位招租">
+
+
+
+<title>数据结构:期中考前复习[2] | 小丑鱼Nemo的小窝</title>
+
+
+
+    <link rel="icon" href="../../../../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../../../../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../../../../js/script.js"></script>
+    
+    <script src="../../../../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">欢迎来到小丑鱼Nemo的小窝</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../../../../archives">Posts</a>
+                
+                    <a class="menu-item" href="../../../../category">Categories</a>
+                
+                    <a class="menu-item" href="../../../../tag">Tags</a>
+                
+                    <a class="menu-item" href="../../../../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">欢迎来到小丑鱼Nemo的小窝</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../../../../archives">Posts</a>
+                
+                    <a class="menu-item" href="../../../../category">Categories</a>
+                
+                    <a class="menu-item" href="../../../../tag">Tags</a>
+                
+                    <a class="menu-item" href="../../../../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">数据结构:期中考前复习[2]</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">小丑鱼Nemo</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十月 25, 2022&nbsp;&nbsp;19:12:06</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../../../../categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="代码题"><a href="#代码题" class="headerlink" title="代码题"></a>代码题</h3><p>已知带头单链表，其数据域类型为整数类型，编一算法，找出链表中所有结点数据域值的最大值，并返回。<br>链表的结点结构为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span>  <span class="keyword">struct</span>  <span class="title class_">LNode</span> &#123;</span><br><span class="line">	<span class="type">int</span>  data ;</span><br><span class="line">	<span class="keyword">struct</span>  <span class="title class_">LNode</span>  * next ;</span><br><span class="line">&#125; LNode , * LinkList ; </span><br></pre></td></tr></table></figure>
+
+<p>解:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">find</span><span class="params">(LinkList &amp;L)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    p = L -&gt; next;</span><br><span class="line">    e = p -&gt; next;</span><br><span class="line">    <span class="keyword">while</span>(p -&gt; next)</span><br><span class="line">    &#123;</span><br><span class="line">        p = p -&gt; next;</span><br><span class="line">        <span class="keyword">if</span>(p -&gt; data &gt; e)</span><br><span class="line">        &#123;</span><br><span class="line">            e = p -&gt; data;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> e;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>已知一个带有表头结点的单链表（结点结构同四题），设计一个尽可能高效的算法，查找链表中倒数第k（k为正整数）个位置上的结点。若查找成功，算法输出该结点的data值，并返回1；否则，只返回0。</p>
+<p>解:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">find</span><span class="params">(LinkList *L, <span class="type">int</span> k)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    q = <span class="literal">NULL</span>;</span><br><span class="line">    p = L -&gt; next;</span><br><span class="line">    count = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(p -&gt; next)</span><br><span class="line">    &#123;</span><br><span class="line">        p = p -&gt; next;</span><br><span class="line">        count ++;</span><br><span class="line">        <span class="keyword">if</span> (count == k)</span><br><span class="line">        &#123;</span><br><span class="line">            q = L -&gt; next;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(count &lt; k)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">while</span>(p -&gt; next)</span><br><span class="line">    &#123;</span><br><span class="line">        p = p -&gt; next;</span><br><span class="line">        q = q -&gt; next;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="built_in">print</span>(q -&gt; data);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>已知一棵二叉树，设计一个算法，统计树中叶子结点个数。<br>二叉树的存储结构为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span>  <span class="keyword">struct</span>  <span class="title class_">BiTNode</span>&#123;</span><br><span class="line">    TElemType        data;</span><br><span class="line">	Struct  BiTNode   *lchild ,*rchild;</span><br><span class="line">&#125; BiTNode , * BiTree;</span><br></pre></td></tr></table></figure>
+
+<p>解:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">Count</span><span class="params">(BiTree &amp;T)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(T == <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="keyword">if</span>(T -&gt; lchild == <span class="literal">NULL</span> &amp;&amp; T -&gt; rchild == <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Count</span>(T -&gt; lchild) + <span class="built_in">Count</span>(T -&gt; rchild);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>已知一棵二叉树（存储结构同六题），设计一个算法，判断给定数据元素e在树中是否存在。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span>  <span class="keyword">struct</span>  <span class="title class_">BiTNode</span>&#123;</span><br><span class="line">    TElemType        data;</span><br><span class="line">	Struct  BiTNode   *lchild ,*rchild;</span><br><span class="line">&#125; BiTNode , * BiTree;</span><br></pre></td></tr></table></figure>
+
+<p>解:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">find</span><span class="params">(BiTree &amp;T ,<span class="type">int</span> e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(T == <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> False;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">if</span>(T -&gt; data == e)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> True;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">find</span>(T-&gt;lchild) || <span class="built_in">find</span>(T-&gt;rchild);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>已知非空带头单链表L，其数据域类型为整数类型。编一算法，找出链表中所有数据域值大于给定值Value的结点个数，并返回。设链表的结点结构为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span>  <span class="keyword">struct</span>  <span class="title class_">LNode</span> &#123;</span><br><span class="line">	<span class="type">int</span>     data ;</span><br><span class="line">	<span class="keyword">struct</span>  <span class="title class_">LNode</span>  * next ;</span><br><span class="line">&#125; LNode , * LinkList ; </span><br><span class="line">LinkList L;</span><br></pre></td></tr></table></figure>
+
+<p>解:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">Count</span><span class="params">(LinkList &amp;L, <span class="type">int</span> Value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    count = <span class="number">0</span>;</span><br><span class="line">    p = L -&gt; next;</span><br><span class="line">    <span class="keyword">while</span>(p -&gt; next)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(p-&gt;data &gt; Value)</span><br><span class="line">        &#123;</span><br><span class="line">            count ++;</span><br><span class="line">		&#125;</span><br><span class="line">        p = p -&gt; next;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>已知一棵非空二叉树T，以二叉链表方式存储。<br>存储结构为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span>  <span class="keyword">struct</span>  <span class="title class_">BiTNode</span>&#123;</span><br><span class="line">    TElemType        data;</span><br><span class="line">	Struct  BiTNode   *lchild ,*rchild;</span><br><span class="line">&#125; BiTNode , * BiTree;</span><br><span class="line">BiTree T;</span><br></pre></td></tr></table></figure>
+
+<p>设计一个算法，统计树T中右孩子为空的结点个数。</p>
+<p>解:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">Count</span><span class="params">(BiTree &amp;T)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(T == <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">if</span>(T -&gt; rchild == <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span> + <span class="built_in">Count</span>(T-&gt;lchild);</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Count</span>(T -&gt; lcihild) + <span class="built_in">Count</span>(T -&gt; rchild);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>已知一带头结点单链表P，<br>链表中结点存储结构为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span>  <span class="keyword">struct</span>  <span class="title class_">Node</span>&#123;</span><br><span class="line">    ElemType       data;</span><br><span class="line">	Struct  Node   *next;</span><br><span class="line">&#125;Node , * LinkList;</span><br><span class="line">LinkList P;</span><br></pre></td></tr></table></figure>
+
+<p>设计一个语句频度尽可能少的算法，判断该链表的长度是偶数还是奇数,并返回。</p>
+<p>解:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">solve</span><span class="params">(LinkList &amp;L)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    count = <span class="number">0</span>;</span><br><span class="line">    p = L;</span><br><span class="line">    <span class="keyword">while</span>(p-&gt;next)</span><br><span class="line">    &#123;</span><br><span class="line">        p = p -&gt; next;</span><br><span class="line">        count ++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(count % <span class="number">2</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 奇数</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 偶数</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>已知带头单链表La和Lb，设计一个尽量高效的算法，将两个链表合并成一个链表，即将一个链表连接到另一链表尾结点之后，使La、Lb均指向新链表头结点，删除多余的头结点。设链表的结点结构为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span>  <span class="keyword">struct</span>  <span class="title class_">LNode</span> &#123;</span><br><span class="line">	ElemType       data ;</span><br><span class="line">	<span class="keyword">struct</span>  <span class="title class_">LNode</span>  * next ;</span><br><span class="line">&#125; LNode , * LinkList ; </span><br></pre></td></tr></table></figure>
+
+<p>解:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">LinkList <span class="title">merge</span><span class="params">(LinkList &amp;La,LinkList &amp;Lb)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	pa = La;</span><br><span class="line">	pb = Lb;</span><br><span class="line">	<span class="keyword">while</span>(pa -&gt; next &amp;&amp; pb -&gt; next)</span><br><span class="line">	&#123;</span><br><span class="line">		pa = pa -&gt; next;</span><br><span class="line">		pb = pb -&gt; next;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(pa -&gt; next == <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		pa -&gt; next = Lb -&gt; next;</span><br><span class="line">        <span class="built_in">free</span>(Lb);</span><br><span class="line">		<span class="keyword">return</span> La;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		pb -&gt; next = La -&gt; next;</span><br><span class="line">        <span class="built_in">free</span>(La);</span><br><span class="line">		<span class="keyword">return</span> Lb;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>设顺序表va中的数据元数递增有序。试写一算法，将x插入到顺序表的适当位置上，以保持该表的有序性。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span>&#123;</span><br><span class="line">	ElemType *elem;</span><br><span class="line">	<span class="type">int</span> length;</span><br><span class="line">	<span class="type">int</span> size;</span><br><span class="line">&#125;Sqlist;</span><br><span class="line"><span class="function">status <span class="title">insert</span><span class="params">(Sqlist &amp;L,ElemType e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span>(L.length + <span class="number">1</span> &gt; L.size)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> ERROR;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>;i &lt; L.length;i ++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(L.elem[i] &gt; e)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">	&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(j = L.length - <span class="number">1</span>; j &gt;= i; j--)</span><br><span class="line">    &#123;</span><br><span class="line">        L.elem[j+<span class="number">1</span>] = L.elem[j];</span><br><span class="line">    &#125;</span><br><span class="line">    L.elem[i] = e;</span><br><span class="line">    <span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>小丑鱼Nemo</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://geyuyao-hub.github.io/2022/10/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%9C%9F%E4%B8%AD%E8%80%83%E5%89%8D%E5%A4%8D%E4%B9%A0-2/">https://geyuyao-hub.github.io/2022/10/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%9C%9F%E4%B8%AD%E8%80%83%E5%89%8D%E5%A4%8D%E4%B9%A0-2/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../../../../tags/%E8%AF%BE%E5%86%85%E7%AC%94%E8%AE%B0/"># 课内笔记</a>
+                    
+                        <a href="../../../../tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"># 数据结构</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="../%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%9C%9F%E4%B8%AD%E8%80%83%E5%89%8D%E5%A4%8D%E4%B9%A0/">数据结构:期中考前复习[1]</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 小丑鱼Nemo | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+	<!-- 页面点击小红心 -->
+	<script type="text/javascript" src="/js/love.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":300,"height":600},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
