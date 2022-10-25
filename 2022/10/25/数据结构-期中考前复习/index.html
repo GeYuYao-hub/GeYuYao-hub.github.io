@@ -15,7 +15,7 @@
 
 
 
-<title>离散数学:图[2] | 小丑鱼Nemo的小窝</title>
+<title>数据结构:期中考前复习[1] | 小丑鱼Nemo的小窝</title>
 
 
 
@@ -237,7 +237,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">离散数学:图[2]</h1>
+            <h1 class="post-title">数据结构:期中考前复习[1]</h1>
             
                 <div class="post-meta">
                     
@@ -246,14 +246,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">十月 24, 2022&nbsp;&nbsp;15:20:46</a>
+                        Date: <a href="#">十月 25, 2022&nbsp;&nbsp;9:57:09</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="../../../../categories/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/">离散数学</a>
+                                <a href="../../../../categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
                             
                         </span>
                     
@@ -262,68 +262,129 @@
         </header>
 
         <div class="post-content">
-            <h3 id="欧拉图-E图"><a href="#欧拉图-E图" class="headerlink" title="欧拉图(E图)"></a>欧拉图(E图)</h3><p><strong>欧拉路</strong>:设G是无孤立结点的图,若存在一条经过图中每边一次且仅一次的路,该路称为欧拉路</p>
-<p><strong>欧拉回路</strong>:若欧拉路是闭的,称为欧拉回路</p>
-<p><strong>欧拉图</strong>:具有欧拉回路的图称为欧拉图</p>
-<p><strong>无向图存在欧拉路的充要条件</strong>:无向图G具有一条欧拉路,当且仅当G是连通的且<mark>有零个或两个奇数度结点</mark>。</p>
-<p><strong>无向图存在欧拉回路的充要条件</strong>:无向图G具有一条欧拉回路,当且仅当G是连通的且<mark>有零个奇数度结点</mark>。</p>
+            <h3 id="判断题"><a href="#判断题" class="headerlink" title="判断题"></a>判断题</h3><p>【$\surd$】字符串模式匹配KMP算法中的k&#x3D;next[j],k一定小于j。</p>
+<p>【$\surd$】链栈的TOP指针指向栈顶元素所在的位置。</p>
+<p>【$\surd$】满二叉树中一定不存在度为1的结点。</p>
 <blockquote>
-<p>一笔划问题的判别:一张图能由一笔划出, 当且仅当每个交点处的线条数均为偶数或恰有两个交点的线条数为奇数</p>
+<p>定义</p>
 </blockquote>
-<p><strong>有向图存在欧拉路的充要条件</strong>:有向图G具有一条从v$\rightarrow$u单向欧拉路, 当且仅 当G是连通的, 且$d^+ (v)&#x3D; d^-(v)+1$, $d^+ (u)&#x3D; d^- (u)-1$, 其他结点入度&#x3D;出度。</p>
-<p><strong>有向图存在欧拉回路的充要条件</strong>:有向图G具有一条单向欧拉回路, 当且仅当G是<mark>弱连通</mark>的,且<mark>每个结点入度等于出度</mark>。</p>
-<h3 id="汉密尔顿图-H图"><a href="#汉密尔顿图-H图" class="headerlink" title="汉密尔顿图(H图)"></a>汉密尔顿图(H图)</h3><p><strong>汉密尔顿路</strong>:给定图G,若存在一条路经过G中每个结点恰好一次, 这条路称为汉密顿路</p>
-<p><strong>汉密尔顿回路</strong>:若汉密尔顿图是闭得，称为哈密尔顿回路</p>
-<p><strong>汉密尔顿图</strong>:存在汉密尔顿回路的图称为汉密尔顿图</p>
-<p><strong>定理</strong>:若图G&#x3D;&lt;V,E&gt;是H图,则对$\forall$S$\in$ V且 S$\neq$$\Phi$,均有W(G-S)≤|S| , 其中W(G-S)是G-S的连通分支数。</p>
+<p>【$\surd$】哈夫曼树中一定不存在度为1的结点。</p>
+<blockquote>
+<p>两两配对，一定没有度为1的节点。</p>
+</blockquote>
+<p>【$\surd$】设模式串的长度为m,目标串的长度为n,当n≈m且处理只匹配一次的模式时,朴素的匹配（即子串定位函数）算法所花的时间代价可能会更为节省。</p>
+<p>【$ \times$】删除只带尾指针的循环链表的首元结点与尾元结点的时间复杂度是相同的。</p>
+<blockquote>
+<p>由于是单循环链表因此需要从尾节点开始遍历直到到达尾指针的上一个节点。</p>
+</blockquote>
+<p>【$\surd$】一棵多叉树转换成二叉树，该二叉树的根结点一定没有右子树。</p>
+<p>【$\surd$】KMP 算法中模式串的 next 值与主串无关。</p>
+<h3 id="选择题"><a href="#选择题" class="headerlink" title="选择题"></a>选择题</h3><p>若一棵完全二叉树有10000个结点，则叶子结点个数是【B】<br>           A）4999        B）5000       C）5001         D）不确定</p>
+<blockquote>
+<p>$n_0 + n_1 + n_2 &#x3D; 10000$</p>
+<p>$n_0 &#x3D; n_2 + 1$</p>
+<p>if $(n_0 + n_1 + n_2)$ % $2 &#x3D;&#x3D; 0:$</p>
+<p>​		$n_1 &#x3D;&#x3D; 1$</p>
+<p>else:</p>
+<p>​		$n_1 &#x3D;&#x3D; 0$</p>
+<p>$n_0 &#x3D; 10000 - n_1 -n_2 &#x3D; 10000 -1 - n_0 + 1$</p>
+<p>$n_0 &#x3D; 5000$</p>
+</blockquote>
+<p>设有一个10X10的对称矩阵A，采用压缩存储方式，以行序为主存储，$a_{1,1}$为第一 元素，其存储地址为1，每个元素占一个地址空间，则$a_{8,5}$的地址为【 B 】</p>
+<p>​		A)13 B)33 C)18  D) 40 </p>
+<blockquote>
+<p>1 + 2 + 3 + 4 + 5 + 6 + 7 + 5 &#x3D; 33</p>
+</blockquote>
+<p>若深度为6的完全二叉树的第6层有3个叶结点，则该二叉树一共有【 B 】个结点。<br>A）33       B）34      C）35        D）不确定</p>
+<blockquote>
+<p>前五层: $2^5 -1 &#x3D; 31$</p>
+<p>故 31  + 3 &#x3D; 34</p>
+</blockquote>
+<p>在具有n个结点以二叉链表表示的二叉树中，其非空指针域的个数为<br>A）n+1       B）n-1      C）2n+1        D） 不确定</p>
+<blockquote>
+<p>根节点不占用指针，故n-1</p>
+</blockquote>
+<p>多叉树F转换成二叉树T，则树F中的叶子结点个数应等于二叉树T中 【 B 】。<br>A）叶子结点个数             B）左子树为空的结点个数<br>C）右子树为空的结点个数     D）度为1的结点个数</p>
+<p>若一棵二叉树中有10个度为2的结点，5个度为1的结点，则树中度为0的结点数为【 C 】个。<br>A）15       B）13      C）11        D）9</p>
+<blockquote>
+<p>节点数 &#x3D; 度数 + 1</p>
+<p>度数 &#x3D; 2 $\times$ 10 + 5 $\times$ 1 &#x3D; 25</p>
+<p>节点数 &#x3D; 26</p>
+<p>$n_0 &#x3D; 26 - 10 -5 &#x3D; 11$</p>
+</blockquote>
+<p>设有100个元素的有序表，用折半查找法查找表中元素，查找成功时最大的比较次数为_________。<br>A）25      B）50      C）10      D）7</p>
+<blockquote>
+<p>$\lfloor log_2 x \rfloor + 1$</p>
+</blockquote>
+<h3 id="非代码题"><a href="#非代码题" class="headerlink" title="非代码题"></a>非代码题</h3><p>设循环队列存放在一段连续空间内，写出队列空和队列满的条件以及队列的长度。（3分）</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#define  MAXQSIZE   100</span></span><br><span class="line"><span class="attribute">typedef</span>   struct  &#123;</span><br><span class="line">      <span class="attribute">QElemType</span>   *base ;</span><br><span class="line">      <span class="attribute">int</span>   front , rear ;</span><br><span class="line">&#125; <span class="attribute">SqQueue</span> ;</span><br><span class="line"><span class="attribute">SqQueue</span>   Q ;</span><br></pre></td></tr></table></figure>
+
+
+<p>初始时  <code>Q.front = Q.rear = 0 </code></p>
+<p>队列为空：<code>Q.rear=Q.front;</code><br>队列为满：<code>(Q.rear+1)%MAXQSIZE=Q.front;</code><br>队列长度：<code>Q.length=(Q.rear-Q.front+MAXQSIZE)%MAXQSIZE;</code></p>
+<p>一棵完全二叉树中有501个叶子结点，则该树中至少有多少结点？最多有多少结点？（3分）</p>
+<blockquote>
+<p>至少结点数为：2N-1      至多结点数为：2N<br>N为完全二叉树含有的叶子结点的个数。</p>
+<p>$n_0 &#x3D; n_2 + 1$</p>
+<p>故$n_2 &#x3D; 500$</p>
+<p>$n_1$可能为1也可能为0</p>
+<p>因此最多有1002，最少有1001</p>
+</blockquote>
+<p>若一棵二叉树共有n个结点，则二叉树的深度最小为多少？最大为多少？（4分）</p>
+<blockquote>
+<p>$\lfloor log_2n \rfloor + 1$<br>n</p>
+</blockquote>
+<p>设有二个栈S1和S2共享一段存储空间V[0…n-1]。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始时       </span></span><br><span class="line">S1<span class="selector-class">.TOP</span> = <span class="number">0</span> ；</span><br><span class="line">S2<span class="selector-class">.TOP</span> = n-<span class="number">1</span> ；</span><br></pre></td></tr></table></figure>
+
+<p>为了尽量利用空间，栈满的条件是什么？<br><code>S1.TOP &gt; S2.TOP</code></p>
+<p>有一份电文中共使用 6个字符：a,b,c,d,e,f，它们的出现频率依次为2，3.5，4.9，7，8.2，9.1。试构造一棵哈夫曼树(4分），并求其加权路径长度WPL(1分）。本小题合计5分。 </p>
 <center>
     <img style="border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/10/24/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E5%9B%BE-2/1.png">
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/10/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%9C%9F%E4%B8%AD%E8%80%83%E5%89%8D%E5%A4%8D%E4%B9%A0/1.jpg">
     <br>
     <div style="color:orange; border-bottom: 1px solid #d9d9d9;
     display: inline-block;
     color: #999;
-    padding: 1px;">例图</div>
-</center>
+    padding: 1px;">
+</div></center>
+写出下列模式串按KMP算法进行匹配时的next值。
+| a    | b    | a    | b    | a    | a    | b    | a    | b    |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| 0    | 1    | 1    | 2    | 3    | 4    | 2    | 3    | 4    |
 
-<p><strong>存在汉密尔顿图的充分条件</strong>:如果G中每一对(不相邻)结点度数之和大于等于n-1,则在G中存在一条汉密尔顿路。</p>
-<p><strong>存在汉密尔顿回图的充分条件</strong>:如果G中每一对(不相邻)结点度数之和大于等于n,则在G中存在一条汉密尔顿回路。</p>
-<p><strong>例题</strong>:七天内安排七门考试使得同一教师所任的两门课不得安排在接连的两天内。</p>
-<p><strong>证明</strong>:若没有教师担任多于四门课,则符合上述要求的安排总是可行的。</p>
-<p><strong>解</strong>:将考试抽象为一个点,若两个考试不是同一个老师则连一条线。此时,我们需要证明一条汉密尔顿路。而考试顺序，就是汉密尔顿路经过节点的路径。</p>
-<p>why?因为一门课不能重复考且必须考，因此每个点必须且只能经过一次。  $\rightarrow$  汉密尔顿图</p>
-<p>每个点的度数范围为[3,6] (这个老师上四门课，则这个点可以连3个其他的考试)。且最多只有一个点的度数为3 (如果有两个老师都上了四门课，则总考试数为8，故不存在这种情况。因此最多只有一个老师上四门课，因此最多只有一个点的度数为3)。故任意不相交两点的度数之和一定大于等于7。因此存在汉密尔顿路。</p>
-<center>
-    <img style="border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/10/24/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E5%9B%BE-2/2.png">
-    <br>
-    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
-    display: inline-block;
-    color: #999;
-    padding: 1px;">例图</div>
-</center>
-
-<h3 id="平面图"><a href="#平面图" class="headerlink" title="平面图"></a>平面图</h3><p><strong>平面图</strong>:无向图G,所有结点和边画在平面上 且 任何两条边除了端点外没有其他的交点 G是一个连通平面图</p>
-<p><strong>面的次数</strong>:面的边界回路长度称为面的次数.记作deg(r)。</p>
-<p>如果面的面积有限,称为<strong>有限面</strong>,否则为<strong>无限面</strong></p>
-<center>
-    <img style="border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/10/24/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E5%9B%BE-2/3.png">
-    <br>
-    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
-    display: inline-block;
-    color: #999;
-    padding: 1px;">例图</div>
-</center>
-
-<p>r1: （A,B,D,A） deg(r1) : 3</p>
-<p>r2: （B,C,D,B） deg(r2): 3</p>
-<p>r3: （C,D,E,F,C） deg(r3)：5 （E,F走了两次）</p>
-<p>r4: （A,B,C,E,A） deg(r4): 4</p>
-<p>r5: （A,D,E,A）外面的区域 deg (r5): 3</p>
-<p><strong>定理</strong>:有限平面图中, 面的次数之和 &#x3D; 边数的两倍。</p>
-<p><strong>欧拉定理</strong>:设G为连通平面图,共有v个结点e条边和r个面,则欧拉公式成立:v-e+r&#x3D;2</p>
-<p><strong>定理</strong>:设G是有v个结点e条边的简单连通平面图,<strong>若v≥3则e≤3v-6</strong></p>
+<table>
+<thead>
+<tr>
+<th>a</th>
+<th>a</th>
+<th>b</th>
+<th>a</th>
+<th>a</th>
+<th>b</th>
+<th>c</th>
+<th>a</th>
+<th>a</th>
+<th>b</th>
+<th>c</th>
+<th>a</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>1</td>
+</tr>
+</tbody></table>
 
         </div>
 
@@ -338,7 +399,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://geyuyao-hub.github.io/2022/10/24/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E5%9B%BE-2/">https://geyuyao-hub.github.io/2022/10/24/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E5%9B%BE-2/</a></span>
+                        <span><a href="https://geyuyao-hub.github.io/2022/10/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%9C%9F%E4%B8%AD%E8%80%83%E5%89%8D%E5%A4%8D%E4%B9%A0/">https://geyuyao-hub.github.io/2022/10/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%9C%9F%E4%B8%AD%E8%80%83%E5%89%8D%E5%A4%8D%E4%B9%A0/</a></span>
                     </p>
                 
                 
@@ -364,7 +425,7 @@
                     
                         <a href="../../../../tags/%E8%AF%BE%E5%86%85%E7%AC%94%E8%AE%B0/"># 课内笔记</a>
                     
-                        <a href="../../../../tags/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/"># 离散数学</a>
+                        <a href="../../../../tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"># 数据结构</a>
                     
                         
                 </span>
@@ -377,10 +438,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="../../25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%9C%9F%E4%B8%AD%E8%80%83%E5%89%8D%E5%A4%8D%E4%B9%A0/">数据结构:期中考前复习[1]</a>
             
-            
-            <a class="next" rel="next" href="../../18/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E5%9B%BE/">离散数学:图[1]</a>
+            <a class="next" rel="next" href="../../24/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E5%9B%BE-2/">离散数学:图[2]</a>
             
         </section>
 
