@@ -15,7 +15,7 @@
 
 
 
-<title>数据结构:内部排序 | 小丑鱼Nemo的小窝</title>
+<title>离散数学:谓词逻辑 | 小丑鱼Nemo的小窝</title>
 
 
 
@@ -239,7 +239,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">数据结构:内部排序</h1>
+            <h1 class="post-title">离散数学:谓词逻辑</h1>
             
                 <div class="post-meta">
                     
@@ -248,14 +248,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">十一月 9, 2022&nbsp;&nbsp;17:42:11</a>
+                        Date: <a href="#">十二月 2, 2022&nbsp;&nbsp;10:44:34</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="../../../../categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+                                <a href="../../../../categories/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/">离散数学</a>
                             
                         </span>
                     
@@ -264,123 +264,116 @@
         </header>
 
         <div class="post-content">
-            <h3 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h3><center>
-    <img style="border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/11/09/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%86%85%E9%83%A8%E6%8E%92%E5%BA%8F/1.jpg">
-    <br>
-    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
-    display: inline-block;
-    color: #999;
-    padding: 1px;">插入排序</div>
-</center>
-
-<p><strong>稳定</strong></p>
-<p><strong>适用于链表</strong></p>
-<p>时间:</p>
-<ul>
-<li><p>最好复杂度 $O(n)$   顺序</p>
-<ul>
-<li>针对每一个元素，首先需要跟它前一个元素进行比较(它之前的序列已经是排好序的)，如果它比前一个元素大，那么它就不需要移动。因此，如果是顺序的话，每个元素仅需要比较一次。故需要比较$n-1$次。</li>
-</ul>
-</li>
-<li><p>最坏复杂度 $O(n^2)$  逆序</p>
-<ul>
-<li>针对每一个元素，都需要和它前面所有的元素进行比较，因此第n个元素(从1开始计数)需要比较$n-1$次。故需要比较$(n \times (n-1)) &#x2F; 2$。</li>
-</ul>
-</li>
-<li><p>平均复杂度$O(n^2)$</p>
-</li>
-</ul>
-<p>空间:</p>
-<ul>
-<li>复杂度$O(1)$</li>
-</ul>
-<p>若完成前 $i$ 轮循环，那么前 $i$ 个数应该是排好序的。</p>
-<p>下列排序方法中，经过一趟排序后，所有元素都有可能不在其最终位置上的排列算法是____。</p>
-<p>A）<MARK>直接插入排序 B）冒泡排序  </MARK></p>
-<p>C）快速排序         D）简单选择排序</p>
+            <h3 id="谓词的概念与表示"><a href="#谓词的概念与表示" class="headerlink" title="谓词的概念与表示"></a>谓词的概念与表示</h3><p>定义:一个 n 元谓词记作:  $A(x_1 , x_2, … x_n)$</p>
+<p>例:</p>
 <blockquote>
-<p>冒泡排序进行一次后，首元素一定是最小的。简单选择排序也是同理。快排第一趟之后确定了枢轴元素的位置。</p>
+<p>令 A(x) : x 是大学生; a:张华 , b:李明  D:人类<br>则 A (a) 表示命题: 张华是大学生,A (b) 表示命题: 李明是大学生。</p>
+</blockquote>
+<p>在谓词逻辑中,重言式不等于永真式。</p>
+<h3 id="量词"><a href="#量词" class="headerlink" title="量词"></a>量词</h3><p>特性谓词:当在全总个体域中讨论命题时,需在命题表示中增加一个特性谓词,以给出个体变元的个体域。</p>
+<p>例:</p>
+<blockquote>
+<p>全称量词用<strong>条件</strong></p>
+<p>任何人都是要死的</p>
+<p>H(x):x是要死的 M(x):x是人</p>
+<p>则命题表示为:$( \forall x)(M(x)\rightarrow H(x))$</p>
 </blockquote>
 <blockquote>
-<p>倘若使用了折半查找其平均复杂度依然是$O(n^2)$</p>
+<p>存在量词用合取</p>
+<p>有些人是聪明的</p>
+<p>A(x)：x是聪明的 M(x):x是人</p>
+<p>则命题表示为:$( \forall x)(M(x)\wedge A(x))$</p>
 </blockquote>
-<h3 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h3><center>
+<h3 id="谓词公式"><a href="#谓词公式" class="headerlink" title="谓词公式"></a>谓词公式</h3><center>
     <img style="border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/11/09/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%86%85%E9%83%A8%E6%8E%92%E5%BA%8F/2.jpg">
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/12/02/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91/1.png">
     <br>
     <div style="color:orange; border-bottom: 1px solid #d9d9d9;
     display: inline-block;
     color: #999;
-    padding: 1px;">希尔排序</div>
+    padding: 1px;">变元约束</div>
 </center>
 
-<p><strong>不稳定</strong></p>
-<p>时间复杂度:</p>
-<ul>
-<li>最坏$O(n^2)$</li>
-<li>比较次数和移动次数约为$n^{1.3}$</li>
-</ul>
-<h3 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h3><center>
+<p><strong>闭式</strong>:不含自由变元的公式<br><strong>开式</strong>:含有自由变元的公式</p>
+<blockquote>
+<p>0元谓词为闭式</p>
+</blockquote>
+<center>
     <img style="border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/11/09/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%86%85%E9%83%A8%E6%8E%92%E5%BA%8F/3.jpg">
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/12/02/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91/2.png">
     <br>
     <div style="color:orange; border-bottom: 1px solid #d9d9d9;
     display: inline-block;
     color: #999;
-    padding: 1px;">冒泡排序</div>
+    padding: 1px;">开命题和闭命题</div>
 </center>
 
-<p><strong>稳定</strong></p>
-<ul>
-<li><p>最好复杂度 $O(n)$   顺序</p>
-<ul>
-<li>比较次数$n-1$次。</li>
-</ul>
+<h3 id="等价和蕴含"><a href="#等价和蕴含" class="headerlink" title="等价和蕴含"></a>等价和蕴含</h3><ul>
+<li><p>如果公式A在任何解释下均为真,称A为永真式</p>
 </li>
-<li><p>最坏复杂度 $O(n^2)$  逆序</p>
-<ul>
-<li>针对第$i$趟排序，需要进行$n-i$次关键字比较。故$(n \times (n-1)) &#x2F; 2$。</li>
-</ul>
+<li><p>如果 A在某个解释I和I的一个赋值下为真,称A可满足</p>
 </li>
-<li><p>平均复杂度$O(n^2)$</p>
+<li><p>如果公式在任何解释下均为假,称A为永假式</p>
 </li>
 </ul>
-<h3 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h3><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1b7411N798?p=81">https://www.bilibili.com/video/BV1b7411N798?p=81</a></p>
-<p><strong>不稳定</strong></p>
-<ul>
-<li><p>最坏:$O(n^2)$</p>
-</li>
-<li><p>最好:$O(nlog_2n)$</p>
-</li>
-</ul>
-<p>每次排序确定了枢轴元素的位置，且枢轴元素前的都小于枢轴元素，枢轴元素后的都大于枢轴元素。</p>
-<h3 id="简单选择排序"><a href="#简单选择排序" class="headerlink" title="简单选择排序"></a>简单选择排序</h3><p>每次从在后边$n-i+1 $个待排序元素中选择一个关键字最小元素作为第$i$个元素。</p>
-<p><strong>不稳定</strong></p>
-<ul>
-<li>最好复杂度$O(n^2)$</li>
-<li>最坏复杂度$O(n)$</li>
-<li>平均$O(n^2)$</li>
-</ul>
-<h3 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h3><center>
+<p>$( \forall x) A(x)\rightarrow B \Leftrightarrow ( \exist x) (A(x)\rightarrow B)$</p>
+<p>$( \exist x) A(x)\rightarrow B \Leftrightarrow ( \forall x) (A(x)\rightarrow B)$</p>
+<p>$B \rightarrow (\forall x) A(x) \Leftrightarrow (B \rightarrow (\forall x)A(x))$</p>
+<p>$B \rightarrow (\exist x) A(x) \Leftrightarrow (B \rightarrow (\exist x)A(x))$</p>
+<p>$(\forall x)(A(x) \wedge B(x)) \Leftrightarrow (\forall x)A(x) \wedge (\forall x)B(x)$</p>
+<p>$(\exist x)(A(x) \vee B(x)) \Leftrightarrow (\exist x)A(x) \vee (\exist x)B(x)$</p>
+<p>$( \forall x)A(x) \vee ( \forall x)B(x) \Rightarrow  (\forall x)(A(x) \vee B(x))$ </p>
+<p>$(\exist x)(A(x)\wedge B(x)) \Rightarrow ((\exist x)A(x) \wedge (\exist x)B(x)$</p>
+<h3 id="前束范式"><a href="#前束范式" class="headerlink" title="前束范式"></a>前束范式</h3><p><strong>定义</strong>:一个公式,如果量词均在全式的开头,它们的作用域,延伸到整个公式的末尾,则该公式叫做前束范式。</p>
+<center>
     <img style="border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/11/09/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%86%85%E9%83%A8%E6%8E%92%E5%BA%8F/4.jpg">
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/12/02/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91/3.png">
     <br>
     <div style="color:orange; border-bottom: 1px solid #d9d9d9;
     display: inline-block;
     color: #999;
-    padding: 1px;">归并排序</div>
-</center>
+    padding: 1px;">转换成前束范式
+</div></center>
 
-<p>核心:将两个有序的合并成一个有序的。</p>
-<p>归并趟数$\lceil log_2n \rceil$</p>
-<p>每趟$O(n)$</p>
-<p>故复杂度为$O(nlog_2n)$</p>
-<h3 id="不稳定"><a href="#不稳定" class="headerlink" title="不稳定"></a>不稳定</h3><ul>
-<li>希尔</li>
-<li>简单选择</li>
-<li>快排</li>
-</ul>
+<h3 id="谓词演算"><a href="#谓词演算" class="headerlink" title="谓词演算"></a>谓词演算</h3><center>
+    <img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/12/02/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91/4.png">
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 1px;">US全称指定
+</div></center>
+
+<center>
+    <img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/12/02/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91/5.png">
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 1px;">US全称推广
+</div></center>
+
+<center>
+    <img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/12/02/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91/6.png">
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 1px;">ES存在指定
+</div></center>
+
+<center>
+    <img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/12/02/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91/7.png">
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 1px;">EG存在推广
+</div></center>
 
         </div>
 
@@ -395,7 +388,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://geyuyao-hub.github.io/2022/11/09/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%86%85%E9%83%A8%E6%8E%92%E5%BA%8F/">https://geyuyao-hub.github.io/2022/11/09/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%86%85%E9%83%A8%E6%8E%92%E5%BA%8F/</a></span>
+                        <span><a href="https://geyuyao-hub.github.io/2022/12/02/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91/">https://geyuyao-hub.github.io/2022/12/02/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91/</a></span>
                     </p>
                 
                 
@@ -421,7 +414,7 @@
                     
                         <a href="../../../../tags/%E8%AF%BE%E5%86%85%E7%AC%94%E8%AE%B0/"># 课内笔记</a>
                     
-                        <a href="../../../../tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"># 数据结构</a>
+                        <a href="../../../../tags/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/"># 离散数学</a>
                     
                         
                 </span>
@@ -434,10 +427,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="../../../12/02/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91/">离散数学:谓词逻辑</a>
             
-            
-            <a class="next" rel="next" href="../../03/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%A4%8D%E4%B9%A0-%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81-1/">操作系统复习:处理机调度与死锁[1]</a>
+            <a class="next" rel="next" href="../../../11/09/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%86%85%E9%83%A8%E6%8E%92%E5%BA%8F/">数据结构:内部排序</a>
             
         </section>
 
