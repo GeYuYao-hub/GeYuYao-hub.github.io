@@ -15,7 +15,7 @@
 
 
 
-<title>离散数学:谓词逻辑 | 小丑鱼Nemo的小窝</title>
+<title>离散数学:集合 | 小丑鱼Nemo的小窝</title>
 
 
 
@@ -239,7 +239,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">离散数学:谓词逻辑</h1>
+            <h1 class="post-title">离散数学:集合</h1>
             
                 <div class="post-meta">
                     
@@ -248,7 +248,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">十二月 2, 2022&nbsp;&nbsp;10:44:34</a>
+                        Date: <a href="#">十二月 4, 2022&nbsp;&nbsp;16:28:51</a>
                         </span>
                     
                     
@@ -264,117 +264,56 @@
         </header>
 
         <div class="post-content">
-            <h3 id="谓词的概念与表示"><a href="#谓词的概念与表示" class="headerlink" title="谓词的概念与表示"></a>谓词的概念与表示</h3><p>定义:一个 n 元谓词记作:  $A(x_1 , x_2, … x_n)$</p>
-<p>例:</p>
-<blockquote>
-<p>令 A(x) : x 是大学生; a:张华 , b:李明  D:人类<br>则 A (a) 表示命题: 张华是大学生,A (b) 表示命题: 李明是大学生。</p>
-</blockquote>
-<p>在谓词逻辑中,重言式不等于永真式。</p>
-<h3 id="量词"><a href="#量词" class="headerlink" title="量词"></a>量词</h3><p>特性谓词:当在全总个体域中讨论命题时,需在命题表示中增加一个特性谓词,以给出个体变元的个体域。</p>
-<p>例:</p>
-<blockquote>
-<p>全称量词用<strong>条件</strong></p>
-<p>任何人都是要死的</p>
-<p>H(x):x是要死的 M(x):x是人</p>
-<p>则命题表示为:$( \forall x)(M(x)\rightarrow H(x))$</p>
-</blockquote>
-<blockquote>
-<p>存在量词用合取</p>
-<p>有些人是聪明的</p>
-<p>A(x)：x是聪明的 M(x):x是人</p>
-<p>则命题表示为:$( \forall x)(M(x)\wedge A(x))$</p>
-</blockquote>
-<h3 id="谓词公式"><a href="#谓词公式" class="headerlink" title="谓词公式"></a>谓词公式</h3><center>
+            <h3 id="概念和表示法"><a href="#概念和表示法" class="headerlink" title="概念和表示法"></a>概念和表示法</h3><p>集合相等:$A &#x3D; B \Leftrightarrow A \subseteq B and A \supseteq B$ </p>
+<p>空集:$ \emptyset \subseteq A$</p>
+<p>子集:</p>
+<center>
     <img style="border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/12/02/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91/1.png">
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/12/04/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E9%9B%86%E5%90%88/1.png">
     <br>
     <div style="color:orange; border-bottom: 1px solid #d9d9d9;
     display: inline-block;
     color: #999;
-    padding: 1px;">变元约束</div>
+    padding: 1px;">子集</div>
 </center>
 
-<p><strong>闭式</strong>:不含自由变元的公式<br><strong>开式</strong>:含有自由变元的公式</p>
-<blockquote>
-<p>0元谓词为闭式</p>
-</blockquote>
+<p>对于含有n个元素的集合A,它的子集个数为$2^{n}$</p>
+<p>幂集:</p>
+<p>由集合A的所有子集为元素组成的集合称为集合A的幂集,记为 $P(A)$</p>
 <center>
     <img style="border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/12/02/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91/2.png">
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/12/04/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E9%9B%86%E5%90%88/2.png">
     <br>
     <div style="color:orange; border-bottom: 1px solid #d9d9d9;
     display: inline-block;
     color: #999;
-    padding: 1px;">开命题和闭命题</div>
+    padding: 1px;">幂集</div>
+</center>
+$P(\emptyset) = \{ \emptyset \}$
+
+<p>$P(P(\emptyset)) &#x3D; { { \emptyset },\emptyset }$</p>
+<p>$P(\emptyset,{\emptyset }) &#x3D; { \emptyset,{\emptyset },,{\emptyset, {\emptyset }}}$</p>
+<h3 id="集合运算"><a href="#集合运算" class="headerlink" title="集合运算"></a>集合运算</h3><center>
+    <img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/12/04/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E9%9B%86%E5%90%88/3.png">
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 1px;">幂集</div>
 </center>
 
-<h3 id="等价和蕴含"><a href="#等价和蕴含" class="headerlink" title="等价和蕴含"></a>等价和蕴含</h3><ul>
-<li><p>如果公式A在任何解释下均为真,称A为永真式</p>
-</li>
-<li><p>如果 A在某个解释I和I的一个赋值下为真,称A可满足</p>
-</li>
-<li><p>如果公式在任何解释下均为假,称A为永假式</p>
-</li>
-</ul>
-<p>$( \forall x) A(x)\rightarrow B \Leftrightarrow ( \exists x) (A(x)\rightarrow B)$</p>
-<p>$( \exists x) A(x)\rightarrow B \Leftrightarrow ( \forall x) (A(x)\rightarrow B)$</p>
-<p>$B \rightarrow (\forall x) A(x) \Leftrightarrow (B \rightarrow (\forall x)A(x))$</p>
-<p>$B \rightarrow (\exists x) A(x) \Leftrightarrow (B \rightarrow (\exists x)A(x))$</p>
-<p>$(\forall x)(A(x) \wedge B(x)) \Leftrightarrow (\forall x)A(x) \wedge (\forall x)B(x)$</p>
-<p>$(\exists x)(A(x) \vee B(x)) \Leftrightarrow (\exists x)A(x) \vee (\exists x)B(x)$</p>
-<p>$( \forall x)A(x) \vee ( \forall x)B(x) \Rightarrow  (\forall x)(A(x) \vee B(x))$ </p>
-<p>$(\exists x)(A(x)\wedge B(x)) \Rightarrow ((\exists x)A(x) \wedge (\exists x)B(x)$</p>
-<h3 id="前束范式"><a href="#前束范式" class="headerlink" title="前束范式"></a>前束范式</h3><p><strong>定义</strong>:一个公式,如果量词均在全式的开头,它们的作用域,延伸到整个公式的末尾,则该公式叫做前束范式。</p>
+<p>对称差:$A \oplus B &#x3D; (A \cup B) - (A \cap B) &#x3D; (A - B) \cup (B - A) $</p>
+<p>$(A \oplus B) \oplus C &#x3D; A \oplus (B \oplus C) $</p>
 <center>
     <img style="border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/12/02/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91/3.png">
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/12/04/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E9%9B%86%E5%90%88/4.png">
     <br>
     <div style="color:orange; border-bottom: 1px solid #d9d9d9;
     display: inline-block;
     color: #999;
-    padding: 1px;">转换成前束范式
-</div></center>
-
-<h3 id="谓词演算"><a href="#谓词演算" class="headerlink" title="谓词演算"></a>谓词演算</h3><center>
-    <img style="border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/12/02/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91/4.png">
-    <br>
-    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
-    display: inline-block;
-    color: #999;
-    padding: 1px;">US全称指定
-</div></center>
-
-<center>
-    <img style="border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/12/02/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91/5.png">
-    <br>
-    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
-    display: inline-block;
-    color: #999;
-    padding: 1px;">US全称推广
-</div></center>
-
-<center>
-    <img style="border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/12/02/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91/6.png">
-    <br>
-    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
-    display: inline-block;
-    color: #999;
-    padding: 1px;">ES存在指定
-</div></center>
-
-<center>
-    <img style="border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" src="/2022/12/02/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91/7.png">
-    <br>
-    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
-    display: inline-block;
-    color: #999;
-    padding: 1px;">EG存在推广
-</div></center>
-
+    padding: 1px;">对称差</div>
+</center>
         </div>
 
         
@@ -388,7 +327,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://geyuyao-hub.github.io/2022/12/02/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91/">https://geyuyao-hub.github.io/2022/12/02/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91/</a></span>
+                        <span><a href="https://geyuyao-hub.github.io/2022/12/04/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E9%9B%86%E5%90%88/">https://geyuyao-hub.github.io/2022/12/04/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E9%9B%86%E5%90%88/</a></span>
                     </p>
                 
                 
@@ -427,10 +366,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="../../04/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E9%9B%86%E5%90%88/">离散数学:集合</a>
             
-            
-            <a class="next" rel="next" href="../../../11/09/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%86%85%E9%83%A8%E6%8E%92%E5%BA%8F/">数据结构:内部排序</a>
+            <a class="next" rel="next" href="../../02/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6-%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91/">离散数学:谓词逻辑</a>
             
         </section>
 
